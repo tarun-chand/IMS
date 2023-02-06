@@ -1,0 +1,373 @@
+{% extends "home.html" %}
+{% block returnDetails %} 
+    <div class="content-page">
+      <div class="container-fluid add-form-list">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between">
+                <div class="header-title" style="text-align: center">
+                  <h4 class="card-title">New Return</h4>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <div class="heading-keeper">
+                        <span>User Details</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Return By *</label>
+                      <select
+                        name="issueto"
+                        class="selectpicker form-control"
+                        data-style="py-0"
+                      >
+                        <option selected="true" disabled="disabled">
+                          --- Select ---
+                        </option>
+                        <option>Staff</option>
+                        <option>Judge</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Giver Name*</label>
+                      <div class="search_select_box">
+                        <select
+                          name="producttype"
+                          class="selectpicker form-control"
+                          data-style="py-0"
+                          data-live-search="true"
+                        >
+                          <option selected="true" disabled="disabled">
+                            --- Select ---
+                          </option>
+                          <option>Amit Kumar Sahu (System Assistance)</option>
+                          <option>Rishikesh Nirmalkar (System Officer)</option>
+                          <option>Tikesh Kumar Sahu (System Assistance)</option>
+                          <option>
+                            Tarun Kumar Chandrakar (Assistant Programmer)
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group text-center">
+                      <button type="submit" class="btn btn-primary mr-2">
+                        Get Details
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <input type="hidden" value="At Computer Section" />
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <div class="heading-keeper">
+                        <span style="padding: 2px 50px"
+                          >List of Assetes Owned By</span
+                        >
+                        <h5 style="display: inline-block; margin-left: 20px">
+                          Tarun Kumar Chandrakar (Assistance Programmer)
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-12">
+                    <div class="table-responsive rounded mb-3">
+                      <table class="data-table table mb-0 tbl-server-info">
+                        <thead class="bg-white text-uppercase">
+                          <tr class="ligth ligth-data">
+                            <th>
+                              <div class="checkbox d-inline-block">
+                                <input
+                                  type="checkbox"
+                                  class="checkbox-input"
+                                  id="checkAll"
+                                />
+                                <label for="checkbox1" class="mb-0"></label>
+                              </div>
+                            </th>
+                            <th>Issue Date</th>
+                            <th>Product Details</th>
+                            <th>Location Details</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody class="ligth-body">
+                          <tr>
+                            <td>
+                              <div class="checkbox d-inline-block">
+                                <input
+                                  type="checkbox"
+                                  class="checkbox-input"
+                                  id="checkbox2"
+                                />
+                                <label for="checkbox2" class="mb-0"></label>
+                              </div>
+                            </td>
+                            <td>01 Jan 2022</td>
+                            <td>
+                              Product Name:PN<br />Model Name/No:MNN<br />Serial
+                              No : SN<br />Product Category:PC<br />Product
+                              Type:PT
+                            </td>
+                            <td>
+                              Section Name:SN<br />Building Name:BN<br />Floor:F<br />Room
+                              No : RN<br />Location:LOC
+                            </td>
+                            <td>
+                              <div
+                                class="d-flex align-items-center list-action"
+                              >
+                                <a
+                                  class="badge bg-success mr-2"
+                                  data-toggle="tooltip"
+                                  data-placement="top"
+                                  title=""
+                                  data-original-title="Edit"
+                                  href="#"
+                                  >Edit</a
+                                >
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div class="checkbox d-inline-block">
+                                <input
+                                  type="checkbox"
+                                  class="checkbox-input"
+                                  id="checkbox2"
+                                />
+                                <label for="checkbox2" class="mb-0"></label>
+                              </div>
+                            </td>
+                            <td>31 Jan 2022</td>
+                            <td>
+                              Product Name:PN<br />Model Name/No:MNN<br />Serial
+                              No : SN<br />Product Category:PC<br />Product
+                              Type:PT
+                            </td>
+                            <td>
+                              Section Name:SN<br />Building Name:BN<br />Floor:F<br />Room
+                              No : RN<br />Location:LOC
+                            </td>
+                            <td>
+                              <div
+                                class="d-flex align-items-center list-action"
+                              >
+                                <a
+                                  class="badge bg-success mr-2"
+                                  data-toggle="tooltip"
+                                  data-placement="top"
+                                  title=""
+                                  data-original-title="Edit"
+                                  href="#"
+                                  >Edit</a
+                                >
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div class="checkbox d-inline-block">
+                                <input
+                                  type="checkbox"
+                                  class="checkbox-input"
+                                  id="checkbox2"
+                                />
+                                <label for="checkbox2" class="mb-0"></label>
+                              </div>
+                            </td>
+                            <td>23 feb 2022</td>
+                            <td>
+                              Product Name:PN<br />Model Name/No:MNN<br />Serial
+                              No : SN<br />Product Category:PC<br />Product
+                              Type:PT
+                            </td>
+                            <td>
+                              Section Name:SN<br />Building Name:BN<br />Floor:F<br />Room
+                              No : RN<br />Location:LOC
+                            </td>
+                            <td>
+                              <div
+                                class="d-flex align-items-center list-action"
+                              >
+                                <a
+                                  class="badge bg-success mr-2"
+                                  data-toggle="tooltip"
+                                  data-placement="top"
+                                  title=""
+                                  data-original-title="Edit"
+                                  href="#"
+                                  >Edit</a
+                                >
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div class="checkbox d-inline-block">
+                                <input
+                                  type="checkbox"
+                                  class="checkbox-input"
+                                  id="checkbox2"
+                                />
+                                <label for="checkbox2" class="mb-0"></label>
+                              </div>
+                            </td>
+                            <td>01 Jan 2022</td>
+                            <td>
+                              Product Name:PN<br />Model Name/No:MNN<br />Serial
+                              No : SN<br />Product Category:PC<br />Product
+                              Type:PT
+                            </td>
+                            <td>
+                              Section Name:SN<br />Building Name:BN<br />Floor:F<br />Room
+                              No : RN<br />Location:LOC
+                            </td>
+                            <td>
+                              <div
+                                class="d-flex align-items-center list-action"
+                              >
+                                <a
+                                  class="badge bg-success mr-2"
+                                  data-toggle="tooltip"
+                                  data-placement="top"
+                                  title=""
+                                  data-original-title="Edit"
+                                  href="#"
+                                  >Edit</a
+                                >
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div class="checkbox d-inline-block">
+                                <input
+                                  type="checkbox"
+                                  class="checkbox-input"
+                                  id="checkbox2"
+                                />
+                                <label for="checkbox2" class="mb-0"></label>
+                              </div>
+                            </td>
+                            <td>01 Jan 2022</td>
+                            <td>
+                              Product Name:PN<br />Model Name/No:MNN<br />Serial
+                              No : SN<br />Product Category:PC<br />Product
+                              Type:PT
+                            </td>
+                            <td>
+                              Section Name:SN<br />Building Name:BN<br />Floor:F<br />Room
+                              No : RN<br />Location:LOC
+                            </td>
+                            <td>
+                              <div
+                                class="d-flex align-items-center list-action"
+                              >
+                                <a
+                                  class="badge bg-success mr-2"
+                                  data-toggle="tooltip"
+                                  data-placement="top"
+                                  title=""
+                                  data-original-title="Edit"
+                                  href="#"
+                                  >Edit</a
+                                >
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div class="checkbox d-inline-block">
+                                <input
+                                  type="checkbox"
+                                  class="checkbox-input"
+                                  id="checkbox2"
+                                />
+                                <label for="checkbox2" class="mb-0"></label>
+                              </div>
+                            </td>
+                            <td>01 Jan 2022</td>
+                            <td>
+                              Product Name:PN<br />Model Name/No:MNN<br />Serial
+                              No : SN<br />Product Category:PC<br />Product
+                              Type:PT
+                            </td>
+                            <td>
+                              Section Name:SN<br />Building Name:BN<br />Floor:F<br />Room
+                              No : RN<br />Location:LOC
+                            </td>
+                            <td>
+                              <div
+                                class="d-flex align-items-center list-action"
+                              >
+                                <a
+                                  class="badge bg-success mr-2"
+                                  data-toggle="tooltip"
+                                  data-placement="top"
+                                  title=""
+                                  data-original-title="Edit"
+                                  href="#"
+                                  >Edit</a
+                                >
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Return Date *</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Date"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Return Remark *</label>
+                      <textarea
+                        class="form-control"
+                        id="exampleFormControlTextarea1"
+                        rows="1"
+                      ></textarea>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group text-center">
+                      <button type="submit" class="btn btn-primary mr-2">
+                        Submit
+                      </button>
+                      <button type="reset" class="btn btn-danger">Reset</button>
+                    </div>
+                  </div>
+                </div>
+                <!--END OF TABLE row-->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ROW END-->
+        <!-- Page end  -->
+      </div>
+    </div>
+
+    {% endblock %}
+
+
+
