@@ -3,54 +3,141 @@
 <div class="content-page">
     <div class="container-fluid add-form-list">
       <div class="row">
-        <div class="col-sm-3">
-          <div class="card">
-            <div class="card-header d-flex justify-content-between">
-              <div class="header-title" style="text-align: center">
-                <h4 class="card-title">Section Details</h4>
+        {%if flag == 'UPDATE'%}
+          <div class="col-sm-3">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between">
+                <div class="header-title" style="text-align: center">
+                  <h4 class="card-title"><span class="text-danger mt-2">Update</span> Section Details</h4>
+                </div>
+              </div>
+              <div class="card-body">
+                <form action="{% url 'sectionDetailsUpdate' %}" data-toggle="validator" method="post">
+                  {% csrf_token %}
+                        <div class="row">
+                        <div class="col-md-12">
+                              {%for msg in messages%}
+                                    {% if msg.tags == "success" %}
+                                          <div class="alert alert-danger" role="alert">
+                                                <div class="iq-alert-text">
+                                                      <b>{{ msg }}</b> 
+                                                </div>
+                                          </div>
+                                    {%endif%}
+                              {%endfor%}
+                        </div>
+                              {%for scdata in scdata%}
+                              <input type="hidden" name="scid" value={{scdata.section_id}} > 
+                      <div class="col-md-12">
+                          <div class="form-group">
+                              <label>Building Name *</label>
+                              <div class="search_select_box">
+                                  <select name="buildingname" class="selectpicker form-control" data-style="py-0" data-live-search="true">
+                                      <option selected="true" value="{{scdata.building_name_id}}">{{scdata.building_name}}"</option> 
+                                      {%for bmlist in list_all_bm%}  
+                                      <option value="{{bmlist.building_id}}">{{bmlist.building_name}}</option> 
+                                      {%endfor%}                       
+                                  </select>
+                              </div>
+                          </div> 
+                      </div>
+                    <div class="col-md-12">
+                      <div class="form-group">
+                          <label>Section Type *</label>
+                          <select name="sectiontype" class="selectpicker form-control" data-style="py-0">
+                            <option selected="true" value="{{scdata.section_type}}">{{scdata.section_type}}"</option> 
+                              <option value="Court">Court</option>
+                              <option value="Section">Section</option>
+                          </select>
+                      </div> 
+                  </div> 
+                  <div class="col-md-12">
+                      <div class="form-group">
+                          <label>Section Name</label>
+                          <input type="text" name="sectionname" class="form-control" value="{{scdata.section_name}}"  >
+                      </div>
+                  </div>
+                  {%endfor%}
+    
+                  </div>
+                  <div class="col-md-12 text-center">
+                      <div class="form-group">
+                            <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                      </div>
+                  </div>
+                </form>
               </div>
             </div>
-            <div class="card-body">
-              <form action="page-list-returns.html" data-toggle="validator">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label>Building Name *</label>
-                            <div class="search_select_box">
-                                <select name="producttype" class="selectpicker form-control" data-style="py-0" data-live-search="true">
-                                    <option selected="true" disabled="disabled">--- Select ---</option>                          
-                                </select>
-                            </div>
-                        </div> 
-                    </div>
+          </div>
+        {%else%}
+          <div class="col-sm-3">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between">
+                <div class="header-title" style="text-align: center">
+                  <h4 class="card-title"><span class="text-primary mt-2">New</span> Section Details</h4>
+                </div>
+              </div>
+              <div class="card-body">
+                <form action="{% url 'sectionDetailsSubmit' %}" data-toggle="validator" method="post">
+                  {% csrf_token %}
+                  <div class="row">
                   <div class="col-md-12">
-                    <div class="form-group">
-                        <label>Section Type *</label>
-                        <select name="producttype" class="selectpicker form-control" data-style="py-0">
-                            <option selected="true" disabled="disabled">--- Select ---</option>
-                            <option value="Court">Court</option>
-                            <option value="Section">Section</option>
-                        </select>
-                    </div> 
-                </div> 
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label>Section Name</label>
-                        <input type="text" class="form-control" placeholder="Product Category Name"  >
-                    </div>
-                </div>
-  
-  
-                </div>
-                <div class="col-md-12 text-center">
-                    <div class="form-group">
-                          <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                    </div>
-                </div>
-              </form>
+                        {%for msg in messages%}
+                              {% if msg.tags == "info" %}
+                                    <div class="alert alert-warning" role="alert">
+                                          <div class="iq-alert-text">
+                                                <b>{{ msg }}</b> 
+                                          </div>
+                                    </div>
+                              {% elif msg.tags == "success" %}
+                              <div class="alert alert-success" role="alert">
+                                    <div class="iq-alert-text">
+                                          <b>{{ msg }}</b> 
+                                    </div>
+                              </div>
+                              {%endif%}
+                        {%endfor%}
+                          <div class="form-group">
+                              <label>Building Name *</label>
+                              <div class="search_select_box">
+                                  <select name="buildingname" class="selectpicker form-control" data-style="py-0" data-live-search="true">
+                                      <option selected="true" disabled="disabled">--- Select ---</option> 
+                                      {%for bmlist in list_all_bm%}  
+                                      <option value="{{bmlist.building_id}}">{{bmlist.building_name}}</option> 
+                                      {%endfor%}                       
+                                  </select>
+                              </div>
+                          </div> 
+                      </div>
+                    <div class="col-md-12">
+                      <div class="form-group">
+                          <label>Section Type *</label>
+                          <select name="sectiontype" class="selectpicker form-control" data-style="py-0">
+                              <option selected="true" disabled="disabled">--- Select ---</option>
+                              <option value="Court">Court</option>
+                              <option value="Section">Section</option>
+                          </select>
+                      </div> 
+                  </div> 
+                  <div class="col-md-12">
+                      <div class="form-group">
+                          <label>Section Name</label>
+                          <input type="text" name="sectionname" class="form-control" placeholder="Product Category Name"  >
+                      </div>
+                  </div>
+    
+    
+                  </div>
+                  <div class="col-md-12 text-center">
+                      <div class="form-group">
+                            <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                      </div>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
-        </div>
+        {%endif%}
   
         <div class="col-sm-9">
               <div class="card">
@@ -74,50 +161,21 @@
                                             </tr>
                                       </thead>
                                       <tbody class="ligth-body">
+                                        {%for sclist in list_all_sc%} 
                                             <tr>
-                                                  
-                                                  <td>01 jan 2020</td>
-                                                  <td>Bill Yerds</td> 
-                                                  <td>01 jan 2020</td>                                   
+                                                  <td>{{sclist.building_name}}</td>
+                                                  <td>{{sclist.section_type}}</td> 
+                                                  <td>{{sclist.section_name}}</td>                                   
                                                   <td>
                                                   <div class="d-flex align-items-center list-action">
                                                         
                                                         <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
-                                                              href="#"><i class="ri-pencil-line mr-0"></i></a>
+                                                        href=" {% url 'sectionDetailsUpdateRedirect'%}?scid={{sclist.section_id}}">Edit</a>
                                                         
                                                   </div>
                                                   </td>
                                             </tr>
-                                            <tr>
-                                                <td>01 jan 2020</td>
-                                                  <td>03 jan 2020</td>
-                                                  <td>Anna Sthesia</td>
-                                                  
-                                                  <td>
-                                                  <div class="d-flex align-items-center list-action">
-                                                        
-                                                        <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
-                                                              href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                                        
-                                                  </div>
-                                                  </td>
-                                            </tr>
-                                            <tr>
-                                                <td>01 jan 2020</td>
-                                                  <td>05 jan 2020</td>
-                                                  <td>Paul Molive</td>
-                                                  
-                                                  <td>
-                                                  <div class="d-flex align-items-center list-action">
-                                                        
-                                                        <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
-                                                              href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                                        
-                                                  </div>
-                                                  </td>
-                                            </tr>
-                                           
-                                            
+                                        {%endfor%}
                                       </tbody>
                                       </table>
                                 </div>

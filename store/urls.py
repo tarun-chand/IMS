@@ -1,27 +1,50 @@
 from django.urls import path
 
 from . import views
+from . import product_view
+from . import user_view
+from . import location_view
+import re  as r
 
 urlpatterns = [
     path('', views.home, name='home'),
 
-    path('productCatRedirect', views.productCatRedirect, name='productCatRedirect'),
-    path('productCatSubmit', views.productCatSubmit, name='productCatSubmit'),
+    path('productCatRedirect', product_view.productCatRedirect, name='productCatRedirect'),
+    path('productCatSubmit', product_view.productCatSubmit, name='productCatSubmit'),
+    path('productCatUpdateRedirect', product_view.productCatUpdateRedirect, name='productCatUpdateRedirect'),
+    path('productCatUpdate', product_view.productCatUpdate, name='productCatUpdate'),
+    
+    path('productDetails', product_view.productDetails, name='productDetails'),
+    
+    path('userDesignationRedirect', user_view.userDesignationRedirect, name='userDesignationRedirect'),
+    path('userDesignationSubmit', user_view.userDesignationSubmit, name='userDesignationSubmit'),
+    path('userDesignationUpdateRedirect', user_view.userDesignationUpdateRedirect, name='userDesignationUpdateRedirect'),
+    path('userDesignationUpdate', user_view.userDesignationUpdate, name='userDesignationUpdate'),
 
-    path('productDetails', views.productDetails, name='productDetails'),
+    path('userDetails', user_view.userDetails, name='userDetails'),
 
-    path('userDesignationRedirect', views.userDesignationRedirect, name='userDesignationRedirect'),
-    path('userDetails', views.userDetails, name='userDetails'),
+    path('buildingDetailsRedirect', location_view.buildingDetailsRedirect, name='buildingDetailsRedirect'),
+    path('buildingDetailsSubmit', location_view.buildingDetailsSubmit, name='buildingDetailsSubmit'),
+    path('buildingDetailsUpdateRedirect', location_view.buildingDetailsUpdateRedirect, name='buildingDetailsUpdateRedirect'),
+    path('buildingDetailsUpdate', location_view.buildingDetailsUpdate, name='buildingDetailsUpdate'),
+  
+    path('sectionRedirect', location_view.sectionRedirect, name='sectionRedirect'),
+    path('sectionDetailsSubmit', location_view.sectionDetailsSubmit, name='sectionDetailsSubmit'),
+    path('sectionDetailsUpdateRedirect', location_view.sectionDetailsUpdateRedirect, name='sectionDetailsUpdateRedirect'),
+    path('sectionDetailsUpdate', location_view.sectionDetailsUpdate, name='sectionDetailsUpdate'),
 
-    path('buildingDetails', views.buildingDetails, name='buildingDetails'),
-    path('sectionRedirect', views.sectionRedirect, name='sectionRedirect'),
-    path('locationRedirect', views.locationRedirect, name='locationRedirect'),
+
+
+    path('locationRedirect', location_view.locationRedirect, name='locationRedirect'),
+    path('locationSectionFilter', location_view.locationSectionFilter, name='locationSectionFilter'),
+    path('locationDetailsSubmit', location_view.locationDetailsSubmit, name='locationDetailsSubmit'),
+    path('locationDetailsUpdateRedirect', location_view.locationDetailsUpdateRedirect, name='locationDetailsUpdateRedirect'),
+    path('locationDetailsUpdate', location_view.locationDetailsUpdate, name='locationDetailsUpdate'),
 
 
     path('issueRedirect', views.issueRedirect, name='issueRedirect'),
     path('listAllIssueDetails', views.listAllIssueDetails, name='listAllIssueDetails'),
     path('returnRedirect', views.returnRedirect, name='returnRedirect'),
     path('listAllReturnDetails', views.listAllReturnDetails, name='listAllReturnDetails'),
-
     path('healthDetailsRedirect', views.healthDetailsRedirect, name='healthDetailsRedirect'),
 ]

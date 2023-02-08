@@ -20,20 +20,21 @@ class ProductDetails(models.Model):
     entry_date = models.DateField(auto_now_add=True)
     initial_quantity = models.IntegerField()
     current_quantity = models.IntegerField(editable = False)
+    cartridge_toner = models.CharField(max_length=250)
     remarks = models.CharField(max_length=300)
 
     def save(self, *args, **kwargs):
         self.current_quantity = self.initial_quantity
         super(ProductDetails, self).save(*args, **kwargs)
 
-class EmployeeDesignationMaster(models.Model):
-    emp_des_id = models.AutoField(primary_key=True)
-    emp_des_name = models.CharField(max_length=250)
-    emp_des_type = models.CharField(max_length=10, choices=(
+class UserDesignationMaster(models.Model):
+    usr_des_id = models.AutoField(primary_key=True)
+    usr_des_name = models.CharField(max_length=250)
+    usr_des_type = models.CharField(max_length=10, choices=(
         ('Judge', 'Judge'), ('Staff', 'Staff')))
 
     def __str__(self):
-        return self.emp_des_name
+        return self.usr_des_name
 
 
 class BuildingMaster(models.Model):
@@ -50,6 +51,8 @@ class SectionDetails(models.Model):
     section_type = models.CharField(max_length=10, choices=(
         ('Court', 'Court'), ('Section', 'Section')))
     section_name = models.CharField(max_length=250)
+    def __str__(self):
+        return self.section_name
     
 
 class LocationDetails(models.Model):
@@ -63,12 +66,12 @@ class LocationDetails(models.Model):
     def __str__(self):
         return self.section_id + self.floor + self.roomno + self.landmark
     
-class EmployeeDetails(models.Model):
-    emp_id = models.AutoField(primary_key=True)
-    emp_des_id = models.ForeignKey(
-        EmployeeDesignationMaster, on_delete=models.CASCADE)
-    emp_name = models.CharField(max_length=250)
-    emp_mobile = models.CharField(max_length=250)
+class UserDetails(models.Model):
+    usr_id = models.AutoField(primary_key=True)
+    usr_des_id = models.ForeignKey(
+        UserDesignationMaster, on_delete=models.CASCADE)
+    usr_name = models.CharField(max_length=250)
+    usr_mobile = models.CharField(max_length=250)
     entry_date = models.DateField(auto_now_add=True)
     location_id = models.ForeignKey(LocationDetails, on_delete=models.CASCADE)
     deleted = models.BooleanField(default=False)
@@ -79,8 +82,8 @@ class TransactionDetails(models.Model):
     trans_id = models.AutoField(primary_key=True)
     product_id  = models.ForeignKey(
         ProductDetails, on_delete=models.CASCADE) 
-    emp_id =  models.ForeignKey(
-        EmployeeDetails, on_delete=models.CASCADE)
+    usr_id =  models.ForeignKey(
+        UserDetails, on_delete=models.CASCADE)
     location_id = models.ForeignKey(
         LocationDetails, on_delete=models.CASCADE)
     trans_tpye = models.CharField(max_length=50, choices=(
