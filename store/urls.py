@@ -15,6 +15,8 @@ urlpatterns = [
     path('productCatUpdate', product_view.productCatUpdate, name='productCatUpdate'),
     
     path('productDetails', product_view.productDetails, name='productDetails'),
+    path('productCategoryFilter', product_view.productCategoryFilter, name='productCategoryFilter'),
+    path('productDetailsSubmit', product_view.productDetailsSubmit, name='productDetailsSubmit'),
     
     path('userDesignationRedirect', user_view.userDesignationRedirect, name='userDesignationRedirect'),
     path('userDesignationSubmit', user_view.userDesignationSubmit, name='userDesignationSubmit'),

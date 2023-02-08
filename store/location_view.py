@@ -99,7 +99,7 @@ def locationRedirect(request):
 def locationSectionFilter(request):
     sectype = request.GET.get('sectype')
     list_all_sc = SectionDetails.objects.filter(section_type=sectype)
-    return render(request,"master/location/sectionList.html",{'list_all_sc':list_all_sc})
+    return render(request,"master/location/sectionListAJX.html",{'list_all_sc':list_all_sc})
 
 def locationDetailsSubmit(request):
     loc = LocationDetails()

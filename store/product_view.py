@@ -42,3 +42,33 @@ def productCatUpdate(request):
 
 def productDetails(request):
     return render(request,"master/product/productDetails.html")
+
+def productCategoryFilter(request):
+    list_all_protype = ProductCategoryMaster.objects.filter(product_type=request.GET.get('protype'))
+    return render(request,"master/product/productCatListAJX.html",{'list_all_protype':list_all_protype})
+
+def productDetailsSubmit(request):
+    pd = ProductCategoryMaster()
+    productcat = request.POST['productcat']
+    productname = request.POST['productname']
+    modelname = request.POST['modelname']
+    serialno = request.POST['serialno']
+    quantity = request.POST['quantity']
+    toner = request.POST['toner']
+
+    
+    is_exists = ProductCategoryMaster.objects.filter(product_type=producttype,product_cat_name=productcatname).exists()
+    if is_exists:
+        messages.info(request, 'Product Category with this Product Type is already exists.!!')
+        print("RETURN FROM EXIXST")
+        return redirect('/productCatRedirect')
+        
+    pd.product_type = productcat
+    pd.product_cat_name = productname
+    pd.product_type = modelname
+    pd.product_cat_name = serialno
+    pd.product_type = quantity
+    pd.product_cat_name = toner
+    pd.save()
+    messages.success(request, 'Product Category SAVED Successfully...!!')
+    return redirect('/productCatRedirect')
