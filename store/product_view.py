@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .models import ProductCategoryMaster
+from .models import ProductCategoryMaster,ProductDetails
 from django.contrib import messages
 
 def productCatRedirect(request):
@@ -9,8 +9,8 @@ def productCatRedirect(request):
 
 def productCatSubmit(request):
     pcm = ProductCategoryMaster()
-    producttype = request.POST['producttype']
-    productcatname = request.POST['productcategory']
+    producttype = request.POST.get('producttype')
+    productcatname = request.POST.get('productcategory')
     is_exists = ProductCategoryMaster.objects.filter(product_type=producttype,product_cat_name=productcatname).exists()
     if is_exists:
         messages.info(request, 'Product Category with this Product Type is already exists.!!')
@@ -41,34 +41,36 @@ def productCatUpdate(request):
 
 
 def productDetails(request):
-    return render(request,"master/product/productDetails.html")
+    list_all_pd = ProductDetails.objects.all()
+    return render(request,"master/product/productDetails.html",{'list_all_pd':list_all_pd})
 
 def productCategoryFilter(request):
     list_all_protype = ProductCategoryMaster.objects.filter(product_type=request.GET.get('protype'))
     return render(request,"master/product/productCatListAJX.html",{'list_all_protype':list_all_protype})
 
 def productDetailsSubmit(request):
-    pd = ProductCategoryMaster()
-    productcat = request.POST['productcat']
-    productname = request.POST['productname']
-    modelname = request.POST['modelname']
-    serialno = request.POST['serialno']
-    quantity = request.POST['quantity']
-    toner = request.POST['toner']
+    pd = ProductDetails()
+    productcat = ProductCategoryMaster.objects.get(product_cat_id=request.POST.get('productcat'))
+    productname = request.POST.get('productname')
+    modelname = request.POST.get('modelname')
+    serialno = request.POST.get('serialno')
+    quantity = request.POST.get('quantity')
+    toner = request.POST.get('toner')
+    remarks = request.POST.get('remarks')
 
-    
-    is_exists = ProductCategoryMaster.objects.filter(product_type=producttype,product_cat_name=productcatname).exists()
+    is_exists = ProductDetails.objects.filter(product_cat_id=productcat,product_name=productname,product_model=modelname,product_serialno=serialno,initial_quantity=quantity,cartridge_toner=toner,remarks=remarks).exists()
     if is_exists:
-        messages.info(request, 'Product Category with this Product Type is already exists.!!')
+        messages.info(request, 'Product Detail with Given Details is already exists.!!')
         print("RETURN FROM EXIXST")
-        return redirect('/productCatRedirect')
+        return redirect('/productDetails')
         
-    pd.product_type = productcat
-    pd.product_cat_name = productname
-    pd.product_type = modelname
-    pd.product_cat_name = serialno
-    pd.product_type = quantity
-    pd.product_cat_name = toner
+    pd.product_cat_id = productcat
+    pd.product_name = productname
+    pd.product_model = modelname
+    pd.product_serialno = serialno
+    pd.initial_quantity = quantity
+    pd.cartridge_toner = toner
+    pd.remarks = remarks
     pd.save()
-    messages.success(request, 'Product Category SAVED Successfully...!!')
-    return redirect('/productCatRedirect')
+    messages.success(request, 'Product Detail SAVED Successfully...!!')
+    return redirect('/productDetails')

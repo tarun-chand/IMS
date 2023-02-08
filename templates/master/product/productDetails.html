@@ -11,10 +11,25 @@
               </div>
             </div>
             <div class="card-body">
-              <form action="page-list-returns.html" data-toggle="validator">
+              <form action="{% url 'productDetailsSubmit' %}" data-toggle="validator" method="post">
+                {% csrf_token %}
                 <div class="row">
-                  
-                    <div class="col-md-12">
+                <div class="col-md-12">
+                      {%for msg in messages%}
+                            {% if msg.tags == "info" %}
+                                  <div class="alert alert-warning" role="alert">
+                                        <div class="iq-alert-text">
+                                              <b>{{ msg }}</b> 
+                                        </div>
+                                  </div>
+                            {% elif msg.tags == "success" %}
+                            <div class="alert alert-success" role="alert">
+                                  <div class="iq-alert-text">
+                                        <b>{{ msg }}</b> 
+                                  </div>
+                            </div>
+                            {%endif%}
+                      {%endfor%}
                         <div class="form-group">
                             <label>Product Type *</label>
                             <div class="search_select_box">
@@ -69,7 +84,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                                 <label>Remark </label>
-                                <textarea class="form-control" name="remark" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                <textarea class="form-control" name="remarks" id="exampleFormControlTextarea1" rows="3"></textarea>
                         </div>
                     </div>
   
@@ -100,23 +115,25 @@
                                             <tr class="ligth ligth-data">
                                                   <th>Product Type</th>
                                                   <th>Product Category</th>
-                                                  <th>Product Name</th>
-                                                  <th>Model Name/No</th>
-                                                  <th>Serial No</th>
+                                                  <th>Product Details</th>                                            
                                                   <th>Quantity</th>
                                                   <th>Remarks</th>
                                                   <th>Action</th>
                                             </tr>
                                       </thead>
                                       <tbody class="ligth-body">
+                                        {%for pddata in list_all_pd%}
                                             <tr>
-                                                <td>01 jan 2020</td>
-                                                  <td>01 jan 2020</td>
-                                                  <td>Bill Yerds</td>  
-                                                  <td>01 jan 2020</td>
-                                                  <td>Bill Yerds</td> 
-                                                  <td>01 jan 2020</td>
-                                                  <td>Bill Yerds</td>                                   
+                                                  <td>{{pddata.product_cat_id.product_type}}</td>
+                                                  <td>{{pddata.product_cat_id.product_cat_name}}</td>
+                                                  <td>
+                                                    <b>Product Name :</b>{{pddata.product_name}}<br>
+                                                    <b>Model Name/No :</b>{{pddata.product_model}}<br>
+                                                    <b>Serial No :</b>{{pddata.product_serialno}}<br>
+                                                    <b>Cartridge Toner :</b>{{pddata.cartridge_toner}}
+                                                  </td>  
+                                                  <td>{{pddata.initial_quantity}}</td>                                                                                 
+                                                  <td>{{pddata.remarks}}</td>                                   
                                                   <td>
                                                   <div class="d-flex align-items-center list-action">
                                                         
@@ -126,6 +143,7 @@
                                                   </div>
                                                   </td>
                                             </tr>
+                                            {%endfor%}
                                             
                                             
                                       </tbody>
