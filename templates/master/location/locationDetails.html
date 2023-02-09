@@ -28,22 +28,7 @@
                         </div>
                               {%for locdata in locdata%}
                                     <input type="hidden" name="locid" value={{locdata.location_id}} > 
-                  <div class="col-md-12">
-                        {%for msg in messages%}
-                              {% if msg.tags == "info" %}
-                                    <div class="alert alert-warning" role="alert">
-                                          <div class="iq-alert-text">
-                                                <b>{{ msg }}</b> 
-                                          </div>
-                                    </div>
-                              {% elif msg.tags == "success" %}
-                              <div class="alert alert-success" role="alert">
-                                    <div class="iq-alert-text">
-                                          <b>{{ msg }}</b> 
-                                    </div>
-                              </div>
-                              {%endif%}
-                        {%endfor%}
+                  <div class="col-md-12">                        
                       <div class="form-group">
                           <label>Section Type *</label>
                           <select name="sectiontype" id="sectiontype"  class="selectpicker form-control" data-style="py-0" onchange="filterSection(this.value)">

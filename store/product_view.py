@@ -62,8 +62,7 @@ def productDetailsSubmit(request):
     if is_exists:
         messages.info(request, 'Product Detail with Given Details is already exists.!!')
         print("RETURN FROM EXIXST")
-        return redirect('/productDetails')
-        
+        return redirect('/productDetails')        
     pd.product_cat_id = productcat
     pd.product_name = productname
     pd.product_model = modelname
@@ -73,4 +72,22 @@ def productDetailsSubmit(request):
     pd.remarks = remarks
     pd.save()
     messages.success(request, 'Product Detail SAVED Successfully...!!')
+    return redirect('/productDetails')
+
+def productDetailsUpdateRedirect(request):
+    pddata = ProductDetails.objects.filter(product_id=request.GET.get('pdid'))
+    list_all_pd = ProductDetails.objects.all()
+    return render(request,"master/product/productDetails.html",{'flag':'UPDATE','pddata':pddata,'list_all_pd':list_all_pd})
+
+def productDetailsUpdate(request):
+    pd = ProductDetails.objects.get(product_id=request.POST.get('pdid'))
+    pd.product_cat_id = ProductCategoryMaster.objects.get(product_cat_id=request.POST.get('productcat'))
+    pd.product_name = request.POST.get('productname')
+    pd.product_model = request.POST.get('modelname')
+    pd.product_serialno = request.POST.get('serialno')
+    pd.initial_quantity = request.POST.get('quantity')
+    pd.cartridge_toner = request.POST.get('toner')
+    pd.remarks = request.POST.get('remarks')
+    pd.save()
+    messages.success(request, 'Product Details UPDATED Successfully...!!')
     return redirect('/productDetails')

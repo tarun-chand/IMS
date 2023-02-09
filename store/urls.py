@@ -17,6 +17,8 @@ urlpatterns = [
     path('productDetails', product_view.productDetails, name='productDetails'),
     path('productCategoryFilter', product_view.productCategoryFilter, name='productCategoryFilter'),
     path('productDetailsSubmit', product_view.productDetailsSubmit, name='productDetailsSubmit'),
+    path('productDetailsUpdateRedirect', product_view.productDetailsUpdateRedirect, name='productDetailsUpdateRedirect'),
+    path('productDetailsUpdate', product_view.productDetailsUpdate, name='productDetailsUpdate'),
     
     path('userDesignationRedirect', user_view.userDesignationRedirect, name='userDesignationRedirect'),
     path('userDesignationSubmit', user_view.userDesignationSubmit, name='userDesignationSubmit'),
@@ -24,6 +26,10 @@ urlpatterns = [
     path('userDesignationUpdate', user_view.userDesignationUpdate, name='userDesignationUpdate'),
 
     path('userDetails', user_view.userDetails, name='userDetails'),
+    path('userDesignationFilter', user_view.userDesignationFilter, name='userDesignationFilter'),
+    path('userDetailsSubmit', user_view.userDetailsSubmit, name='userDetailsSubmit'),
+    path('userDetailsUpdateRedirect', user_view.userDetailsUpdateRedirect, name='userDetailsUpdateRedirect'),
+    path('userDetailsUpdate', user_view.userDetailsUpdate, name='userDetailsUpdate'),
 
     path('buildingDetailsRedirect', location_view.buildingDetailsRedirect, name='buildingDetailsRedirect'),
     path('buildingDetailsSubmit', location_view.buildingDetailsSubmit, name='buildingDetailsSubmit'),

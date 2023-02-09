@@ -63,8 +63,11 @@ class LocationDetails(models.Model):
     landmark = models.CharField(max_length=250)
     deleted = models.BooleanField(default=False)
 
-    def __str__(self):
-        return self.section_id + self.floor + self.roomno + self.landmark
+    # def __str__(self):
+    #     return str(self.floor+self.roomno)
+    #     # return str(self.location_id)
+
+    
     
 class UserDetails(models.Model):
     usr_id = models.AutoField(primary_key=True)

@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .models import UserDesignationMaster
+from .models import UserDesignationMaster,UserDetails,LocationDetails
 from django.contrib import messages
 
 
@@ -41,7 +41,50 @@ def userDesignationUpdate(request):
 
 
 
-
-
 def userDetails(request):
-    return render(request,"master/users/userDetails.html")
+    list_of_loc = LocationDetails.objects.all()
+    list_of_usr = UserDetails.objects.all()
+    print("list_of_usr===========",list_of_usr.query)
+    return render(request,"master/users/userDetails.html",{'list_of_usr':list_of_usr,'list_of_loc':list_of_loc})
+
+def userDesignationFilter(request):
+    list_all_usrdesi=UserDesignationMaster.objects.filter(usr_des_type=request.GET.get('usrtype'))
+    print("list_all_usrdesi-------------",list_all_usrdesi)
+    return render(request,"master/users/userDesigListAJX.html",{'list_all_usrdesi':list_all_usrdesi})
+
+def userDetailsSubmit(request):
+    ud = UserDetails()
+    usrdesig =  UserDesignationMaster.objects.get(usr_des_id=request.POST.get('usrdesig'))
+    usrname = request.POST.get('usrname')
+    usrmobile = request.POST.get('usrmobile')
+    usrloc =   LocationDetails.objects.get(location_id=request.POST.get('usrloc'))
+    print("USER LOCATION----------- ",usrloc)
+    is_exists = UserDetails.objects.filter(usr_des_id=usrdesig,usr_name=usrname,usr_mobile=usrmobile,location_id=usrloc).exists()
+    if is_exists:
+        messages.info(request, 'User Detail with given Details is already exists.!!')
+        return redirect('/userDesignationRedirect')
+    ud.usr_des_id = usrdesig
+    ud.usr_name = usrname
+    ud.usr_mobile = usrmobile
+    ud.location_id = usrloc
+    ud.save()
+    messages.success(request, 'User Details Saved Successfully...!!')
+    return redirect('/userDetails')
+    
+
+def userDetailsUpdateRedirect(request):
+    uddata = UserDetails.objects.filter(usr_id=request.GET.get('udid'))
+    list_of_usr = UserDetails.objects.all()
+    list_of_loc = LocationDetails.objects.all()
+    return render(request,"master/users/userDetails.html",{'flag':'UPDATE','uddata':uddata,'list_of_usr':list_of_usr,'list_of_loc':list_of_loc})
+
+def userDetailsUpdate(request):
+    uddata = UserDesignationMaster.objects.get(usr_des_id=request.POST.get('udid'))
+    uddata.usr_des_type=request.POST.get('usrdestype')
+    uddata.usr_des_name=request.POST.get('usrdesname')
+    uddata.usr_des_name=request.POST.get('usrdesname')
+    uddata.usr_des_name=request.POST.get('usrdesname')
+    uddata.usr_des_name=request.POST.get('usrdesname')
+    uddata.save()
+    messages.success(request, 'User Details UPDATED Successfully...!!')
+    return redirect('/userDetails')
