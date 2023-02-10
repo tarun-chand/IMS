@@ -26,10 +26,10 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Product Type *</label>
-                                            <select name="producttype" class="selectpicker form-control" data-style="py-0">
+                                            <select name="producttype" id="producttype" class="selectpicker form-control" data-style="py-0" onchange="checkProductType()">
                                                 <option selected="true" disabled="disabled">--- Select ---</option>
-                                                <option>Consumable</option>
-                                                <option>Non-Consumable</option>
+                                                <option value="Consumable" >Consumable</option>
+                                                <option value="Non-Consumable">Non-Consumable</option>
                                             </select>
                                         </div> 
                                     </div> 
@@ -38,7 +38,7 @@
                                         <div class="form-group">
                                             <label>Product Category *</label>
                                             <div class="search_select_box">
-                                                <select name="producttype" class="selectpicker form-control" data-style="py-0" data-live-search="true">
+                                                <select name="productcat" id="productcat" class="selectpicker form-control" data-style="py-0" data-live-search="true" onchange="getProductList()">
                                                     <option selected="true" disabled="disabled">--- Select ---</option>                          
                                                 </select>
                                             </div>
@@ -49,7 +49,7 @@
                                         <div class="form-group">
                                             <label>Product*</label>
                                             <div class="search_select_box">
-                                                <select name="producttype" class="selectpicker form-control" data-style="py-0" data-live-search="true">
+                                                <select name="product" id="productdet" class="selectpicker form-control" data-style="py-0" data-live-search="true">
                                                     <option selected="true" disabled="disabled">--- Select ---</option>                          
                                                 </select>
                                             </div>
@@ -58,8 +58,8 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Model Name/No *</label>
-                                            <div class="search_select_box">
-                                                <select name="producttype" class="selectpicker form-control" data-style="py-0" data-live-search="true">
+                                            <div class="search_select_box" >
+                                                <select name="model" id="model"  class="selectpicker form-control" data-style="py-0" data-live-search="true" >
                                                     <option selected="true" disabled="disabled">--- Select ---</option>                          
                                                 </select>
                                             </div>
@@ -69,7 +69,7 @@
                                         <div class="form-group">
                                             <label>Serial No *</label>
                                             <div class="search_select_box">
-                                                <select name="producttype" class="selectpicker form-control" data-style="py-0" data-live-search="true">
+                                                <select name="serial" id="serial" class="selectpicker form-control" data-style="py-0" data-live-search="true" >
                                                     <option selected="true" disabled="disabled">--- Select ---</option>                          
                                                 </select>
                                             </div>
@@ -81,12 +81,6 @@
                                             <input type="text" class="form-control" placeholder="No of Item"  >
                                         </div>
                                     </div> 
-
-
-
-
-
-
                                     <div class="col-md-12">  
                                         <div class="form-group">
                                             <div class="heading-keeper">
@@ -94,9 +88,6 @@
                                             </div> 
                                         </div>
                                     </div>
-
-
-
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label> Issued To *</label>
@@ -175,4 +166,67 @@
            <!-- Page end  -->
        </div>
     </div>
+    <script>
+        function checkProductType(){
+            protype=$('#producttype').val();
+            $.ajax({
+                type:"GET",
+                url: "/issueProductCategoryFilter",
+                data:{
+                    protype: protype
+                },
+                success: function(data) 
+                {
+                $('#productcat').html(data);
+                $('#productcat').selectpicker('refresh');
+              }
+            })
+            if (protype == 'Consumable'){
+                $('#model').attr('disabled',true);
+                $('#model').selectpicker('refresh');
+                $('#serial').attr('disabled',true); 
+                $('#serial').selectpicker('refresh');
+            }
+            else{
+                $('#model').attr('disabled',false);
+                $('#model').selectpicker('refresh');
+                $('#serial').attr('disabled',false);
+                $('#serial').selectpicker('refresh');
+            }            
+        }
+        function getProductList(){
+            productcat=$('#productcat').val();
+            $.ajax({
+                type:"GET",
+                url: "/issueProductFilter",
+                data:{
+                    productcat: productcat
+                },
+                success: function(data) 
+                {
+                    alert(data);
+                $('#productdet').html(data);
+                $('#productdet').selectpicker('refresh');
+              }
+            })
+        }
+        function getProductModelList(){
+            productcat=$('#productcat').val();
+            $.ajax({
+                type:"GET",
+                url: "/issueProductFilter",
+                data:{
+                    productcat: productcat
+                },
+                success: function(data) 
+                {
+                    alert(data);
+                $('#productdet').html(data);
+                $('#productdet').selectpicker('refresh');
+              }
+            })
+        }
+    </script>
+
+
     {% endblock %}

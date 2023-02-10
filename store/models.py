@@ -10,13 +10,43 @@ class ProductCategoryMaster(models.Model):
     def __str__(self):
         return self.product_cat_name
 
+class ProductCompanyMaster(models.Model):
+    product_com_id = models.AutoField(primary_key=True)
+    product_cat_id = models.ForeignKey(
+        ProductCategoryMaster, on_delete=models.CASCADE)
+    product_com_name = models.CharField("Product Company Name :",max_length=250)
+
+    def __str__(self):
+        return self.product_com_name
+
+class ProductModelMaster(models.Model):
+    product_mod_id = models.AutoField(primary_key=True)
+    product_com_id = models.ForeignKey(
+        ProductCompanyMaster, on_delete=models.CASCADE)
+    product_mod_name = models.CharField("Product Model Name :",max_length=250)
+
+    def __str__(self):
+        return self.product_mod_name
+
+class ProductSerialMaster(models.Model):
+    product_ser_id = models.AutoField(primary_key=True)
+    product_mod_id = models.ForeignKey(
+        ProductModelMaster, on_delete=models.CASCADE)
+    product_serial_number = models.CharField("Product Model Name :",max_length=250)
+
+    def __str__(self):
+        return self.product_serial_number
+
 class ProductDetails(models.Model):
     product_id = models.AutoField(primary_key=True)
     product_cat_id = models.ForeignKey(
         ProductCategoryMaster, on_delete=models.CASCADE)
-    product_name = models.CharField(max_length=250)
-    product_model = models.CharField(max_length=250)
-    product_serialno = models.CharField(max_length=250)
+    product_name = models.ForeignKey(
+        ProductCompanyMaster, on_delete=models.CASCADE)
+    product_model = models.ForeignKey(
+        ProductModelMaster, on_delete=models.CASCADE)
+    product_serialno = models.ForeignKey(
+        ProductSerialMaster, on_delete=models.CASCADE)
     entry_date = models.DateField(auto_now_add=True)
     initial_quantity = models.IntegerField()
     current_quantity = models.IntegerField(editable = False)

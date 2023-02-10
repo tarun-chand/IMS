@@ -13,6 +13,16 @@ urlpatterns = [
     path('productCatSubmit', product_view.productCatSubmit, name='productCatSubmit'),
     path('productCatUpdateRedirect', product_view.productCatUpdateRedirect, name='productCatUpdateRedirect'),
     path('productCatUpdate', product_view.productCatUpdate, name='productCatUpdate'),
+
+    path('productCompanyRedirect', product_view.productCompanyRedirect, name='productCompanyRedirect'),
+    path('productCompanySubmit', product_view.productCompanySubmit, name='productCompanySubmit'),
+    path('productCompanyUpdateRedirect', product_view.productCompanyUpdateRedirect, name='productCompanyUpdateRedirect'),
+    path('productCompanyUpdate', product_view.productCompanyUpdate, name='productCompanyUpdate'),
+
+    path('productModelRedirect', product_view.productModelRedirect, name='productModelRedirect'),
+    path('productModelSubmit', product_view.productModelSubmit, name='productModelSubmit'),
+    path('productModelUpdateRedirect', product_view.productModelUpdateRedirect, name='productModelUpdateRedirect'),
+    path('productModelUpdate', product_view.productModelUpdate, name='productModelUpdate'),
     
     path('productDetails', product_view.productDetails, name='productDetails'),
     path('productCategoryFilter', product_view.productCategoryFilter, name='productCategoryFilter'),
@@ -51,6 +61,9 @@ urlpatterns = [
 
 
     path('issueRedirect', views.issueRedirect, name='issueRedirect'),
+    path('issueProductCategoryFilter', views.issueProductCategoryFilter, name='issueProductCategoryFilter'),
+    path('issueProductFilter', views.issueProductFilter, name='issueProductFilter'),
+
     path('listAllIssueDetails', views.listAllIssueDetails, name='listAllIssueDetails'),
     path('returnRedirect', views.returnRedirect, name='returnRedirect'),
     path('listAllReturnDetails', views.listAllReturnDetails, name='listAllReturnDetails'),

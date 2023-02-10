@@ -160,6 +160,16 @@
                           </a>
                         </li>
                         <li class="">
+                          <a href="{% url 'productCompanyRedirect' %}">
+                            <i class="las la-minus"></i><span>Add Product Company</span>
+                          </a>
+                        </li>
+                        <li class="">
+                          <a href="{% url 'productModelRedirect' %}">
+                            <i class="las la-minus"></i><span>Add Product Model</span>
+                          </a>
+                        </li>
+                        <li class="">
                           <a href="{% url 'productDetails' %}">
                             <i class="las la-minus"></i><span>Add New Product</span>
                           </a>
@@ -619,6 +629,14 @@
 
       {% block healthDetails %}
       <!---List section DETAIL--->
+      {% endblock %}
+
+      {% block productCompany %}
+      <!---List Product Company--->
+      {% endblock %}
+      
+      {% block productModel %}
+      <!---List Product Model--->
       {% endblock %}
     </div>
     <!-- Wrapper End-->

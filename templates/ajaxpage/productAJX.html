@@ -1,0 +1,15 @@
+{%if flag == 'productCategoryList'%}
+
+    <option selected="true" disabled="disabled">--- Select ---</option>                           
+    {%for pclist in list_all_protype %}
+    <option value="{{pclist.product_cat_id}}">{{pclist.product_cat_name}}</option>
+    {%endfor%}
+
+{%elif flag == 'productList'%}
+
+    <option selected="true" disabled="disabled">--- Select ---</option>                           
+    {%for prodlist in list_all_prod %}
+    <option value="{{prodlist.product_id}}">{{prodlist.product_name}}</option>
+    {%endfor%}
+    
+{%endif%}

@@ -39,6 +39,27 @@ def productCatUpdate(request):
     messages.success(request, 'Product Category UPDATED Successfully...!!')
     return redirect('/productCatRedirect')
 
+def productCompanyRedirect(request):
+    pass
+def productCompanyFilter(request):
+    pass
+def productCompanySubmit(request):
+    pass
+def productCompanyUpdateRedirect(request):
+    pass
+def productCompanyUpdate(request):
+    pass
+
+def productModelRedirect(request):
+    pass
+def productModelFilter(request):
+    pass
+def productModelSubmit(request):
+    pass
+def productModelUpdateRedirect(request):
+    pass
+def productModelUpdate(request):
+    pass
 
 def productDetails(request):
     list_all_pd = ProductDetails.objects.all()
@@ -46,7 +67,7 @@ def productDetails(request):
 
 def productCategoryFilter(request):
     list_all_protype = ProductCategoryMaster.objects.filter(product_type=request.GET.get('protype'))
-    return render(request,"master/product/productCatListAJX.html",{'list_all_protype':list_all_protype})
+    return render(request,"ajaxpage/productAJX.html",{'flag':'productCategoryList','list_all_protype':list_all_protype})
 
 def productDetailsSubmit(request):
     pd = ProductDetails()

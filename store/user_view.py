@@ -79,12 +79,11 @@ def userDetailsUpdateRedirect(request):
     return render(request,"master/users/userDetails.html",{'flag':'UPDATE','uddata':uddata,'list_of_usr':list_of_usr,'list_of_loc':list_of_loc})
 
 def userDetailsUpdate(request):
-    uddata = UserDesignationMaster.objects.get(usr_des_id=request.POST.get('udid'))
-    uddata.usr_des_type=request.POST.get('usrdestype')
-    uddata.usr_des_name=request.POST.get('usrdesname')
-    uddata.usr_des_name=request.POST.get('usrdesname')
-    uddata.usr_des_name=request.POST.get('usrdesname')
-    uddata.usr_des_name=request.POST.get('usrdesname')
+    uddata = UserDetails.objects.get(usr_id=request.POST.get('udid'))
+    uddata.usr_des_id=UserDesignationMaster.objects.get(usr_des_id=request.POST.get('usrdesig'))
+    uddata.usr_name=request.POST.get('usrname')
+    uddata.usr_mobile=request.POST.get('usrmobile')
+    uddata.location_id=LocationDetails.objects.get(location_id=request.POST.get('usrloc'))
     uddata.save()
     messages.success(request, 'User Details UPDATED Successfully...!!')
     return redirect('/userDetails')
