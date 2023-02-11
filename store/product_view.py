@@ -9,7 +9,12 @@ def productCategoryFilter(request):
 
 def productNameFilter(request):
     list_all_product = ProductDetails.objects.filter(product_type=request.GET.get('productname'))
-    return render(request,"ajaxpage/productAJX.html",{'flag':'productsList','list_all_protype':list_all_protype})
+    return render(request,"ajaxpage/productAJX.html",{'flag':'productCompanyList','list_all_protype':list_all_protype})
+
+def productNameFilter(request):
+    list_all_product = ProductDetails.objects.filter(product_type=request.GET.get('productname'))
+    return render(request,"ajaxpage/productAJX.html",{'flag':'productModelList','list_all_protype':list_all_protype})
+
 
 
 
