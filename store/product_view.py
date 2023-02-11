@@ -1,7 +1,18 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .models import ProductCategoryMaster,ProductDetails
+from .models import ProductCategoryMaster,ProductDetails,ProductCompanyMaster,ProductModelMaster
 from django.contrib import messages
+
+def productCategoryFilter(request):
+    list_all_protype = ProductCategoryMaster.objects.filter(product_type=request.GET.get('protype'))
+    return render(request,"ajaxpage/productAJX.html",{'flag':'productCategoryList','list_all_protype':list_all_protype})
+
+def productNameFilter(request):
+    list_all_product = ProductDetails.objects.filter(product_type=request.GET.get('productname'))
+    return render(request,"ajaxpage/productAJX.html",{'flag':'productsList','list_all_protype':list_all_protype})
+
+
+
 
 def productCatRedirect(request):
     list_all_pc = ProductCategoryMaster.objects.all()
@@ -11,14 +22,14 @@ def productCatSubmit(request):
     pcm = ProductCategoryMaster()
     producttype = request.POST.get('producttype')
     productcatname = request.POST.get('productcategory')
-    is_exists = ProductCategoryMaster.objects.filter(product_type=producttype,product_cat_name=productcatname).exists()
+    is_exists = ProductCategoryMaster.objects.filter(product_type=producttype,product_com_name=productcatname).exists()
     if is_exists:
         messages.info(request, 'Product Category with this Product Type is already exists.!!')
         print("RETURN FROM EXIXST")
         return redirect('/productCatRedirect')
         
     pcm.product_type = producttype
-    pcm.product_cat_name = productcatname
+    pcm.product_com_name = productcatname
     pcm.save()
     messages.success(request, 'Product Category SAVED Successfully...!!')
     return redirect('/productCatRedirect')
@@ -34,40 +45,87 @@ def productCatUpdateRedirect(request):
 def productCatUpdate(request):
     pcdata = ProductCategoryMaster.objects.get(product_cat_id=request.POST.get('pcid'))
     pcdata.product_type=request.POST.get('producttype')
-    pcdata.product_cat_name=request.POST.get('productcategory')
+    pcdata.product_com_name=request.POST.get('productcategory')
     pcdata.save()
     messages.success(request, 'Product Category UPDATED Successfully...!!')
     return redirect('/productCatRedirect')
 
 def productCompanyRedirect(request):
-    pass
-def productCompanyFilter(request):
-    pass
+    list_all_pc = ProductCategoryMaster.objects.all()
+    list_all_pcm = ProductCompanyMaster.objects.all()
+    return render(request,"master/product/productCompany.html",{'flag':'NEW','list_all_pc':list_all_pc,'list_all_pcm':list_all_pcm})
+
 def productCompanySubmit(request):
-    pass
+    pcn = ProductCompanyMaster()
+    productcat = ProductCategoryMaster.objects.get(product_cat_id=request.POST.get('productcat'))
+    productcomname = request.POST.get('companyname')
+    is_exists = ProductCompanyMaster.objects.filter(product_cat_id=productcat,product_com_name=productcomname).exists()
+    if is_exists:
+        messages.info(request, 'Product Company Name given details is already exists.!!')
+        print("RETURN FROM EXIXST")
+        return redirect('/productCompanyRedirect')
+        
+    pcn.product_cat_id = productcat
+    pcn.product_com_name = productcomname
+    pcn.save()
+    messages.success(request, 'Product Company Name SAVED Successfully...!!')
+    return redirect('/productCompanyRedirect')
+
 def productCompanyUpdateRedirect(request):
-    pass
+    list_all_pc = ProductCategoryMaster.objects.all()
+    list_all_pcm = ProductCompanyMaster.objects.all()
+    pcdata = ProductCompanyMaster.objects.filter(product_com_id=request.GET.get('pcid'))
+    return render(request,"master/product/productCompany.html",{'flag':'UPDATE','pcdata':pcdata,'list_all_pc':list_all_pc,'list_all_pcm':list_all_pcm})
+    
+
 def productCompanyUpdate(request):
-    pass
+    pcdata = ProductCompanyMaster.objects.get(product_com_id=request.POST.get('pcid'))
+    pcdata.product_cat_id= ProductCategoryMaster.objects.get(product_cat_id=request.POST.get('productcat'))
+    pcdata.product_com_name=request.POST.get('companyname')
+    pcdata.save()
+    messages.success(request, 'Product Company Name UPDATED Successfully...!!')
+    return redirect('/productCompanyRedirect')
 
 def productModelRedirect(request):
-    pass
-def productModelFilter(request):
-    pass
+    list_all_pcm = ProductCompanyMaster.objects.select_related('product_cat_id').filter(product_cat_id__product_type="Non-Consumable")
+    list_all_pmn = ProductModelMaster.objects.all()
+    return render(request,"master/product/productModel.html",{'flag':'NEW','list_all_pcm':list_all_pcm,'list_all_pmn':list_all_pmn})
+
 def productModelSubmit(request):
-    pass
+    pcm = ProductModelMaster()
+    productcomname = ProductCompanyMaster.objects.get(product_com_id=request.POST.get('productcomname'))
+    productmodel = request.POST.get('productmodel')
+    is_exists = ProductModelMaster.objects.filter(product_com_id=productcomname,product_mod_name=productmodel).exists()
+    if is_exists:
+        messages.info(request, 'Product Model Name given details is already exists.!!')
+        print("RETURN FROM EXIXST")
+        return redirect('/productModelRedirect')
+        
+    pcm.product_com_id = productcomname
+    pcm.product_mod_name = productmodel
+    pcm.save()
+    messages.success(request, 'Product Model Name SAVED Successfully...!!')
+    return redirect('/productModelRedirect')
+
 def productModelUpdateRedirect(request):
-    pass
+    list_all_pcm = ProductCompanyMaster.objects.select_related('product_cat_id').filter(product_cat_id__product_type="Non-Consumable")
+    list_all_pmn = ProductModelMaster.objects.all()
+    pcdata = ProductModelMaster.objects.filter(product_mod_id=request.GET.get('pmid'))
+    return render(request,"master/product/productModel.html",{'flag':'UPDATE','pcdata':pcdata,'list_all_pcm':list_all_pcm,'list_all_pmn':list_all_pmn})
+
 def productModelUpdate(request):
-    pass
+    pcdata = ProductModelMaster.objects.get(product_mod_id=request.POST.get('pmid'))
+    pcdata.product_com_id= ProductCompanyMaster.objects.get(product_com_id=request.POST.get('productcomname'))
+    pcdata.product_mod_name=request.POST.get('productmodel')
+    pcdata.save()
+    messages.success(request, 'Product Model Name UPDATED Successfully...!!')
+    return redirect('/productModelRedirect')
 
 def productDetails(request):
     list_all_pd = ProductDetails.objects.all()
     return render(request,"master/product/productDetails.html",{'list_all_pd':list_all_pd})
 
-def productCategoryFilter(request):
-    list_all_protype = ProductCategoryMaster.objects.filter(product_type=request.GET.get('protype'))
-    return render(request,"ajaxpage/productAJX.html",{'flag':'productCategoryList','list_all_protype':list_all_protype})
+
 
 def productDetailsSubmit(request):
     pd = ProductDetails()
@@ -94,6 +152,8 @@ def productDetailsSubmit(request):
     pd.save()
     messages.success(request, 'Product Detail SAVED Successfully...!!')
     return redirect('/productDetails')
+
+
 
 def productDetailsUpdateRedirect(request):
     pddata = ProductDetails.objects.filter(product_id=request.GET.get('pdid'))

@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class ProductCategoryMaster(models.Model):
     product_cat_id = models.AutoField(primary_key=True)
     product_type = models.CharField("Product Type",max_length=20, choices=(
@@ -24,7 +23,6 @@ class ProductModelMaster(models.Model):
     product_com_id = models.ForeignKey(
         ProductCompanyMaster, on_delete=models.CASCADE)
     product_mod_name = models.CharField("Product Model Name :",max_length=250)
-
     def __str__(self):
         return self.product_mod_name
 
@@ -32,8 +30,7 @@ class ProductSerialMaster(models.Model):
     product_ser_id = models.AutoField(primary_key=True)
     product_mod_id = models.ForeignKey(
         ProductModelMaster, on_delete=models.CASCADE)
-    product_serial_number = models.CharField("Product Model Name :",max_length=250)
-
+    product_serial_number = models.CharField("Product Serial No :",max_length=250)
     def __str__(self):
         return self.product_serial_number
 
@@ -48,7 +45,7 @@ class ProductDetails(models.Model):
     product_serialno = models.ForeignKey(
         ProductSerialMaster, on_delete=models.CASCADE)
     entry_date = models.DateField(auto_now_add=True)
-    initial_quantity = models.IntegerField()
+    initial_quantity = models.IntegerField(default=1)
     current_quantity = models.IntegerField(editable = False)
     cartridge_toner = models.CharField(max_length=250)
     remarks = models.CharField(max_length=300)
@@ -122,6 +119,7 @@ class TransactionDetails(models.Model):
     trans_tpye = models.CharField(max_length=50, choices=(
         ('Issued', 'Issued'),('AtComputerSection', 'At Computer Section')))
     trans_date = models.DateField()
+    no_of_item = models.IntegerField()
     remarks = models.CharField(max_length=250)
 
 

@@ -49,28 +49,36 @@
                             </div>
                         </div> 
                     </div>
-                      <div class="col-md-12">
-                          <div class="form-group">
-                              <label>Product Name</label>
-                              <input type="text" name="productname" class="form-control" value="{{pddata.product_name}}"  >
+                    <div class="col-md-12">
+                      <div class="form-group">
+                          <label>Product Name *</label>
+                          <div class="search_select_box" >
+                              <select name="productname" id="productname"  class="selectpicker form-control" data-style="py-0" data-live-search="true" onchange="printerProp()" >
+                                <option selected="true" disabled="disabled">--- Select ---</option>
+                              </select>
                           </div>
-                      </div>
+                      </div> 
+                  </div>
                       <div class="col-md-12" id="model" style="display:none;">
-                          <div class="form-group">
-                              <label>Model Name/No</label>
-                              <input type="text" name="modelname" class="form-control" value="{{pddata.product_model}}"  >
+                        <div class="form-group">
+                          <label>Model Name *</label>
+                          <div class="search_select_box" >
+                              <select name="modelname" id="modelname"  class="selectpicker form-control" data-style="py-0" data-live-search="true" onchange="printerProp()" >
+                                <option selected="true" disabled="disabled">--- Select ---</option>
+                              </select>
                           </div>
+                      </div> 
                       </div>
                       <div class="col-md-12" id="serial" style="display:none;">
-                          <div class="form-group">
-                              <label>Serial No</label>
-                              <input type="text" name="serialno" class="form-control" value="{{pddata.product_serialno}}"  >
-                          </div>
+                        <div class="form-group">
+                          <label>Serial No *</label>
+                          <input type="text" name="serialno" id="serialno"   class="form-control" placeholder="Product Serial No"  >
                       </div>
-                      <div class="col-md-12">
+                      </div>
+                      <div class="col-md-12" >  
                           <div class="form-group">
                               <label>Quantity</label>
-                              <input type="text" name="quantity" class="form-control" placeholder="Quantity" value="{{pddata.initial_quantity}}"   >
+                              <input type="text" name="quantity" id="qunval" class="form-control" placeholder="Quantity"  >
                           </div>
                       </div>
                       <div class="col-md-12" id="toner" style="display:none;">
@@ -145,28 +153,36 @@
                             </div>
                         </div> 
                     </div>
-                      <div class="col-md-12">
-                          <div class="form-group">
-                              <label>Product Name</label>
-                              <input type="text" name="productname" class="form-control" placeholder="Product Name"  >
+                    <div class="col-md-12">
+                      <div class="form-group">
+                          <label>Product Name *</label>
+                          <div class="search_select_box" >
+                              <select name="productname" id="productname"  class="selectpicker form-control" data-style="py-0" data-live-search="true" onchange="printerProp()" >
+                                <option selected="true" disabled="disabled">--- Select ---</option>
+                              </select>
                           </div>
-                      </div>
+                      </div> 
+                  </div>
                       <div class="col-md-12" id="model" style="display:none;">
-                          <div class="form-group">
-                              <label>Model Name/No</label>
-                              <input type="text" name="modelname" class="form-control" placeholder="Model Name/No"  >
+                        <div class="form-group">
+                          <label>Model Name *</label>
+                          <div class="search_select_box" >
+                              <select name="modelname" id="modelname"  class="selectpicker form-control" data-style="py-0" data-live-search="true" onchange="printerProp()" >
+                                <option selected="true" disabled="disabled">--- Select ---</option>
+                              </select>
                           </div>
+                      </div> 
                       </div>
                       <div class="col-md-12" id="serial" style="display:none;">
-                          <div class="form-group">
-                              <label>Serial No</label>
-                              <input type="text" name="serialno" class="form-control" placeholder="Serial No"  >
-                          </div>
+                        <div class="form-group">
+                          <label>Serial No *</label>
+                          <input type="text" name="serialno" id="serialno"   class="form-control" placeholder="Product Serial No"  >
                       </div>
-                      <div class="col-md-12">
+                      </div>
+                      <div class="col-md-12" >  
                           <div class="form-group">
                               <label>Quantity</label>
-                              <input type="text" name="quantity" class="form-control" placeholder="Quantity"  >
+                              <input type="text" name="quantity" id="qunval" class="form-control" placeholder="Quantity"  >
                           </div>
                       </div>
                       <div class="col-md-12" id="toner" style="display:none;">
@@ -274,17 +290,38 @@
             $('#productcat').selectpicker('refresh');
           }
         })
+        
         if (protype == 'Consumable'){
             document.getElementById('model').style.display ='none';
             document.getElementById('serial').style.display ='none';
+            
+            $('#qunval').val("1");
+            $('#qunval').attr('disabled',false);
         }
         else{
             document.getElementById('model').style.display ='block';
             document.getElementById('serial').style.display ='block';
+            
+            $('#qunval').val("1");
+            $('#qunval').attr('disabled',true);
         }
     }
 
     function printerProp(){
+      
+      productcat=$('#productcat').val();
+        $.ajax({
+          type:"GET",
+          url: "/productNameFilter",
+          data:{
+            productcat: productcat
+          },
+          success: function(data) 
+          {
+            $('#productname').html(data);
+            $('#productname').selectpicker('refresh');
+          }
+        })
       productcat = $("#productcat option:selected").text();
   
         if(productcat =='Printer'){
@@ -293,6 +330,8 @@
         else{
           document.getElementById('toner').style.display ='none';
         }
+
+
     }
 </script>
 {% endblock %}

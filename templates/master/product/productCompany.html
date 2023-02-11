@@ -7,18 +7,17 @@
             <div class="card">
             <div class="card-header d-flex justify-content-between">
                   <div class="header-title" style="text-align: center">
-                  <h4 class="card-title"><span class="text-danger mt-2">Update</span> Product Category </h4>
+                  <h4 class="card-title"><span class="text-danger mt-2">Update</span> Product Company </h4>
                   </div>
             </div>
             <div class="card-body">
                   <form
-                  action="{% url 'productCatUpdate' %}"
+                  action="{% url 'productCompanyUpdate' %}"
                   method="post"
                   data-toggle="validator"
                   >
                   {% csrf_token %}
                   <div class="row">
-                  <div class="col-md-12">
                         {%for msg in messages%}
                               {% if msg.tags == "success" %}
                                     <div class="alert alert-danger" role="alert">
@@ -29,31 +28,27 @@
                               {%endif%}
                         {%endfor%}
                         {%for pcdata in pcdata%}
-                        <input type="hidden" name="pcid" value={{pcdata.product_cat_id}} > 
-                        <div class="form-group">
-                        <label>Product Type *</label>
-                        <select
-                        name="producttype"
-                        class="selectpicker form-control"
-                        data-style="py-0"
-                        >
-                        <option selected="true"  value="{{pcdata.product_type}}">{{pcdata.product_type}}</option>
-                        <option value="Consumable">Consumable</option>
-                        <option value="Non-Consumable">Non-Consumable</option>
-                        </select>
-                        </div>
-                  </div>
+                        <input type="hidden" name="pcid" value={{pcdata.product_com_id}} >                        
                   <div class="col-md-12">
                         <div class="form-group">
-                        <label>Product Category Name</label>
-                        <input
-                        name="productcategory"
-                        type="text"
-                        class="form-control"
-                        value="{{pcdata.product_cat_name}}"
-                        />
+                            <label>Product Category *</label>
+                            <div class="search_select_box" >
+                                <select name="productcat" id="productcat"  class="selectpicker form-control" data-style="py-0" data-live-search="true"  >
+                                  <option selected="true" value="{{pcdata.product_cat_id.product_cat_id}}">{{pcdata.product_cat_id.product_cat_name}} : - : [{{pcdata.product_cat_id.product_type}}]</option>
+                                  <option  disabled="disabled">--- Select ---</option>
+                                  {%for pcat in list_all_pc%}
+                                    <option value="{{pcat.product_cat_id}}">{{pcat.product_cat_name}} : - : [{{pcat.product_type}}]</option>
+                                   {%endfor%}
+                                </select>
+                            </div>
+                        </div> 
+                    </div>
+                  <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Product Company Name</label>
+                            <input type="text" name="companyname" class="form-control" value="{{pcdata.product_com_name}}" >
                         </div>
-                  </div>
+                    </div>
                   {%endfor%}
                   </div>
                   <div class="col-md-12 text-center">
@@ -72,18 +67,18 @@
                   <div class="card">
                   <div class="card-header d-flex justify-content-between">
                         <div class="header-title" style="text-align: center">
-                        <h4 class="card-title"><span class="text-primary mt-2">New</span> Product Category </h4>
+                        <h4 class="card-title"><span class="text-primary mt-2">New</span> Product Company </h4>
                         </div>
                   </div>
                   <div class="card-body">
                         <form
-                        action="{% url 'productCatSubmit' %}"
+                        action="{% url 'productCompanySubmit' %}"
                         method="post"
                         data-toggle="validator"
                         >
                         {% csrf_token %}
                         <div class="row">
-                        <div class="col-md-12">
+                       
                               {%for msg in messages%}
                                     {% if msg.tags == "info" %}
                                           <div class="alert alert-warning" role="alert">
@@ -98,33 +93,27 @@
                                           </div>
                                     </div>
                                     {%endif%}
-                              {%endfor%}
-                              <div class="form-group">
-                              <label>Product Type *</label>
-                              <select
-                              name="producttype"
-                              class="selectpicker form-control"
-                              data-style="py-0"
-                              >
-                              <option selected="true" disabled="disabled">
-                                    --- Select ---
-                              </option>
-                              <option value="Consumable">Consumable</option>
-                              <option value="Non-Consumable">Non-Consumable</option>
-                              </select>
-                              </div>
-                        </div>
+                              {%endfor%}                              
+                   
                         <div class="col-md-12">
                               <div class="form-group">
-                              <label>Product Category Name</label>
-                              <input
-                              name="productcategory"
-                              type="text"
-                              class="form-control"
-                              placeholder="Product Category Name"
-                              />
+                                  <label>Product Category *</label>
+                                  <div class="search_select_box" >
+                                      <select name="productcat" id="productcat"  class="selectpicker form-control" data-style="py-0" data-live-search="true"  >
+                                        <option selected="true" disabled="disabled">--- Select ---</option>
+                                        {%for pcat in list_all_pc%}
+                                          <option value="{{pcat.product_cat_id}}">{{pcat.product_cat_name}} : - : [{{pcat.product_type}}]</option>
+                                        {%endfor%}
+                                      </select>
+                                  </div>
+                              </div> 
+                          </div>
+                        <div class="col-md-12">
+                              <div class="form-group">
+                                  <label>Product Company Name</label>
+                                  <input type="text" name="companyname" class="form-control" placeholder="Product Company Name" >
                               </div>
-                        </div>
+                          </div>
                         </div>
                         <div class="col-md-12 text-center">
                         <div class="form-group">
@@ -143,7 +132,7 @@
         <div class="card">
           <div class="card-header d-flex justify-content-between">
             <div class="header-title" style="text-align: center">
-              <h4 class="card-title">All Product Category</h4>
+              <h4 class="card-title">All Product Company Name</h4>
             </div>
           </div>
           <div class="card-body">
@@ -158,14 +147,16 @@
                       <tr class="ligth ligth-data">
                         <th>Product Type</th>
                         <th>Product Category Name</th>
+                        <th>Product Company Name</th>
                         <th>Action</th>
                       </tr>
                     </thead>
                     <tbody class="ligth-body">
-                        {%for pclist in list_all_pc%}
+                        {%for pclist in list_all_pcm%}
                       <tr>
-                        <td>{{pclist.product_type}}</td>
-                        <td>{{pclist.product_cat_name}}</td>
+                        <td>{{pclist.product_cat_id.product_type}}</td>
+                        <td>{{pclist.product_cat_id.product_cat_name}}</td>
+                        <td>{{pclist.product_com_name}}</td>
                         <td>
                           <div class="d-flex align-items-center list-action">
                             <a
@@ -174,7 +165,7 @@
                               data-placement="top"
                               title=""
                               data-original-title="Edit"
-                              href=" {% url 'productCatUpdateRedirect'%}?pcid={{pclist.product_cat_id}}"
+                              href=" {% url 'productCompanyUpdateRedirect'%}?pcid={{pclist.product_com_id}}"
                               >Edit</a>
                           </div>
                         </td>
@@ -193,5 +184,6 @@
     <!-- Page end  -->
   </div>
 </div>
+
 
 {% endblock %}

@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'inventory.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'durginventory',
+        'NAME': 'durg_ims',
         'USER':'postgres',
         'PASSWORD':'123',
         'HOST':'localhost',

@@ -7,12 +7,12 @@
             <div class="card">
             <div class="card-header d-flex justify-content-between">
                   <div class="header-title" style="text-align: center">
-                  <h4 class="card-title"><span class="text-danger mt-2">Update</span> Product Category </h4>
+                  <h4 class="card-title"><span class="text-danger mt-2">Update</span> Product Model Name </h4>
                   </div>
             </div>
             <div class="card-body">
                   <form
-                  action="{% url 'productCatUpdate' %}"
+                  action="{% url 'productModelUpdate' %}"
                   method="post"
                   data-toggle="validator"
                   >
@@ -29,28 +29,32 @@
                               {%endif%}
                         {%endfor%}
                         {%for pcdata in pcdata%}
-                        <input type="hidden" name="pcid" value={{pcdata.product_cat_id}} > 
+                        <input type="hidden" name="pmid" value={{pcdata.product_mod_id}} > 
                         <div class="form-group">
-                        <label>Product Type *</label>
+                        <label>Product Company Name *</label>
                         <select
-                        name="producttype"
+                        name="productcomname"
                         class="selectpicker form-control"
                         data-style="py-0"
                         >
-                        <option selected="true"  value="{{pcdata.product_type}}">{{pcdata.product_type}}</option>
-                        <option value="Consumable">Consumable</option>
-                        <option value="Non-Consumable">Non-Consumable</option>
+                        <option value="{{pcdata.product_com_id.product_com_id}}">{{pcdata.product_com_id.product_com_name}} --- [{{pcdata.product_com_id.product_cat_id.product_cat_name}}]</option>
+                        <option  disabled="disabled">
+                              Company Name -- [Category]
+                              </option>
+                              {%for pcat in list_all_pcm%}
+                              <option value="{{pcat.product_com_id}}">{{pcat.product_com_name}} --- [{{pcat.product_cat_id.product_cat_name}}]</option>
+                              {%endfor%}
                         </select>
                         </div>
                   </div>
                   <div class="col-md-12">
                         <div class="form-group">
-                        <label>Product Category Name</label>
+                        <label>Product Model Name *</label>
                         <input
-                        name="productcategory"
+                        name="productmodel"
                         type="text"
                         class="form-control"
-                        value="{{pcdata.product_cat_name}}"
+                        value="{{pcdata.product_mod_name}}"
                         />
                         </div>
                   </div>
@@ -72,12 +76,12 @@
                   <div class="card">
                   <div class="card-header d-flex justify-content-between">
                         <div class="header-title" style="text-align: center">
-                        <h4 class="card-title"><span class="text-primary mt-2">New</span> Product Category </h4>
+                        <h4 class="card-title"><span class="text-primary mt-2">New</span> Product Model Name </h4>
                         </div>
                   </div>
                   <div class="card-body">
                         <form
-                        action="{% url 'productCatSubmit' %}"
+                        action="{% url 'productModelSubmit' %}"
                         method="post"
                         data-toggle="validator"
                         >
@@ -99,29 +103,31 @@
                                     </div>
                                     {%endif%}
                               {%endfor%}
+                              <input type="hidden" name="pmid" value={{pcdata.product_com_id}} >                        
                               <div class="form-group">
-                              <label>Product Type *</label>
+                              <label>Product Company Name *</label>
                               <select
-                              name="producttype"
+                              name="productcomname"
                               class="selectpicker form-control"
                               data-style="py-0"
                               >
                               <option selected="true" disabled="disabled">
-                                    --- Select ---
+                              Company Name -- [Category]
                               </option>
-                              <option value="Consumable">Consumable</option>
-                              <option value="Non-Consumable">Non-Consumable</option>
+                              {%for pcat in list_all_pcm%}
+                              <option value="{{pcat.product_com_id}}">{{pcat.product_com_name}} --- [{{pcat.product_cat_id.product_cat_name}}]</option>
+                              {%endfor%}
                               </select>
                               </div>
                         </div>
                         <div class="col-md-12">
                               <div class="form-group">
-                              <label>Product Category Name</label>
+                              <label>Product Model Name *</label>
                               <input
-                              name="productcategory"
+                              name="productmodel"
                               type="text"
                               class="form-control"
-                              placeholder="Product Category Name"
+                              placeholder="Product Model Name"
                               />
                               </div>
                         </div>
@@ -143,7 +149,7 @@
         <div class="card">
           <div class="card-header d-flex justify-content-between">
             <div class="header-title" style="text-align: center">
-              <h4 class="card-title">All Product Category</h4>
+              <h4 class="card-title">All Product Model</h4>
             </div>
           </div>
           <div class="card-body">
@@ -158,14 +164,18 @@
                       <tr class="ligth ligth-data">
                         <th>Product Type</th>
                         <th>Product Category Name</th>
+                        <th>Product Company Name</th>
+                        <th>Product Model Name</th>
                         <th>Action</th>
                       </tr>
                     </thead>
                     <tbody class="ligth-body">
-                        {%for pclist in list_all_pc%}
+                        {%for pclist in list_all_pmn%}
                       <tr>
-                        <td>{{pclist.product_type}}</td>
-                        <td>{{pclist.product_cat_name}}</td>
+                        <td>{{pclist.product_com_id.product_cat_id.product_type}}</td>
+                        <td>{{pclist.product_com_id.product_cat_id.product_cat_name}}</td>
+                        <td>{{pclist.product_com_id}}</td>
+                        <td>{{pclist.product_mod_name}}</td>
                         <td>
                           <div class="d-flex align-items-center list-action">
                             <a
@@ -174,7 +184,7 @@
                               data-placement="top"
                               title=""
                               data-original-title="Edit"
-                              href=" {% url 'productCatUpdateRedirect'%}?pcid={{pclist.product_cat_id}}"
+                              href=" {% url 'productModelUpdateRedirect'%}?pmid={{pclist.product_mod_id}}"
                               >Edit</a>
                           </div>
                         </td>

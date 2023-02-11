@@ -8,6 +8,8 @@ import re  as r
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('productCategoryFilter', product_view.productCategoryFilter, name='productCategoryFilter'),
+    path('productNameFilter', product_view.productNameFilter, name='productNameFilter'),
 
     path('productCatRedirect', product_view.productCatRedirect, name='productCatRedirect'),
     path('productCatSubmit', product_view.productCatSubmit, name='productCatSubmit'),
@@ -25,7 +27,6 @@ urlpatterns = [
     path('productModelUpdate', product_view.productModelUpdate, name='productModelUpdate'),
     
     path('productDetails', product_view.productDetails, name='productDetails'),
-    path('productCategoryFilter', product_view.productCategoryFilter, name='productCategoryFilter'),
     path('productDetailsSubmit', product_view.productDetailsSubmit, name='productDetailsSubmit'),
     path('productDetailsUpdateRedirect', product_view.productDetailsUpdateRedirect, name='productDetailsUpdateRedirect'),
     path('productDetailsUpdate', product_view.productDetailsUpdate, name='productDetailsUpdate'),
