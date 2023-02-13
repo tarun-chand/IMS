@@ -10,6 +10,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('productCategoryFilter', product_view.productCategoryFilter, name='productCategoryFilter'),
     path('productNameFilter', product_view.productNameFilter, name='productNameFilter'),
+    path('productCompanyFilter', product_view.productCompanyFilter, name='productCompanyFilter'),
 
     path('productCatRedirect', product_view.productCatRedirect, name='productCatRedirect'),
     path('productCatSubmit', product_view.productCatSubmit, name='productCatSubmit'),
@@ -63,6 +64,7 @@ urlpatterns = [
 
     path('issueRedirect', views.issueRedirect, name='issueRedirect'),
     path('issueProductCategoryFilter', views.issueProductCategoryFilter, name='issueProductCategoryFilter'),
+    path('issueProductDetailsFilter', views.issueProductDetailsFilter, name='issueProductDetailsFilter'),
     path('issueProductFilter', views.issueProductFilter, name='issueProductFilter'),
 
     path('listAllIssueDetails', views.listAllIssueDetails, name='listAllIssueDetails'),

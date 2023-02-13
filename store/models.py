@@ -26,13 +26,13 @@ class ProductModelMaster(models.Model):
     def __str__(self):
         return self.product_mod_name
 
-class ProductSerialMaster(models.Model):
-    product_ser_id = models.AutoField(primary_key=True)
-    product_mod_id = models.ForeignKey(
-        ProductModelMaster, on_delete=models.CASCADE)
-    product_serial_number = models.CharField("Product Serial No :",max_length=250)
-    def __str__(self):
-        return self.product_serial_number
+# class ProductSerialMaster(models.Model):
+#     product_ser_id = models.AutoField(primary_key=True)
+#     product_mod_id = models.ForeignKey(
+#         ProductModelMaster, on_delete=models.CASCADE)
+#     product_serial_number = models.CharField("Product Serial No :",max_length=250)
+#     def __str__(self):
+#         return self.product_serial_number
 
 class ProductDetails(models.Model):
     product_id = models.AutoField(primary_key=True)
@@ -42,8 +42,7 @@ class ProductDetails(models.Model):
         ProductCompanyMaster, on_delete=models.CASCADE)
     product_model = models.ForeignKey(
         ProductModelMaster, on_delete=models.CASCADE)
-    product_serialno = models.ForeignKey(
-        ProductSerialMaster, on_delete=models.CASCADE)
+    product_serialno = models.CharField(max_length=250,default='None', editable=False)
     entry_date = models.DateField(auto_now_add=True)
     initial_quantity = models.IntegerField(default=1)
     current_quantity = models.IntegerField(editable = False)
@@ -121,6 +120,7 @@ class TransactionDetails(models.Model):
     trans_date = models.DateField()
     no_of_item = models.IntegerField()
     remarks = models.CharField(max_length=250)
+    received_status = models.IntegerField()
 
 
 class HealthStatusDetails(models.Model):

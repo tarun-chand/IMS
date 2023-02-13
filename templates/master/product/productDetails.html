@@ -27,77 +27,59 @@
                     {%endfor%}
                     {%for pddata in pddata%}
                         <input type="hidden" name="pdid" value={{pddata.product_id}} >
-                          <div class="form-group">
-                              <label>Product Type *</label>
-                              <div class="search_select_box">
-                                  <select name="producttype" id="producttype" class="selectpicker form-control" data-style="py-0" data-live-search="true" onchange="checkProductType()">
-                                    <option selected="true" value="{{pddata.product_cat_id.product_type}}">{{pddata.product_cat_id.product_type}}</option>                          
-                                      <option  disabled="disabled">--- Select ---</option>                          
-                                      <option value="Consumable">Consumable</option>                          
-                                      <option value="Non-Consumable">Non-Consumable</option>                          
-                                  </select>
-                              </div>
-                          </div> 
-                      </div>
-                      <div class="col-md-12">
                         <div class="form-group">
-                            <label>Product Category *</label>
-                            <div class="search_select_box" >
-                                <select name="productcat" id="productcat"  class="selectpicker form-control" data-style="py-0" data-live-search="true" onchange="printerProp()" >
-                                  <option value="{{pddata.product_cat_id.product_cat_id}}">{{pddata.product_cat_id.product_cat_name}}</option>                          
-                                </select>
-                            </div>
-                        </div> 
-                    </div>
-                    <div class="col-md-12">
-                      <div class="form-group">
-                          <label>Product Company Name *</label>
-                          <div class="search_select_box" >
-                              <select name="productname" id="productname"  class="selectpicker form-control" data-style="py-0" data-live-search="true" onchange="printerProp()" >
-                                <option selected="true" disabled="disabled">--- Select ---</option>
+                          <label>Product Category:-:[Type] *</label>
+                          <div class="search_select_box">
+                              <select name="producttype" id="producttype" class="selectpicker form-control" data-style="py-0" data-live-search="true" onchange="checkProductTypeUpdate()">
+                                  <option  selected="true" value="{{pddata.product_cat_id.product_cat_id}}">{{pddata.product_cat_id.product_cat_name}}:-:[{{pddata.product_cat_id.product_type}}]</option>                          
+                                  <option  disabled="disabled">-- Category:-:[ Type ] --</option>                          
+                                  {%for pclist in list_all_pc%}
+                                  <option value="{{pclist.product_cat_id}}">{{pclist.product_cat_name}}:-:[{{pclist.product_type}}]</option>                          
+                                  {%endfor%}                  
                               </select>
                           </div>
                       </div> 
-                  </div>
-                      <div class="col-md-12" id="model" style="display:none;">
-                        <div class="form-group">
-                          <label>Product Model Name *</label>
-                          <div class="search_select_box" >
-                              <select name="modelname" id="modelname"  class="selectpicker form-control" data-style="py-0" data-live-search="true" onchange="printerProp()" >
-                                <option selected="true" disabled="disabled">--- Select ---</option>
-                              </select>
-                          </div>
-                      </div> 
-                      </div>
+                      </div>                                    
+                  <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Product Company Name :-: [ Model Name] *</label>
+                        <div class="search_select_box" >
+                            <select name="modelname" id="modelname" class="selectpicker form-control" data-style="py-0" data-live-search="true" >
+                              <option selected="true" value="{{pddata.product_model.product_mod_id}}">{{pddata.product_name.product_com_name}}:-:[{{pddata.product_model.product_mod_name}}]</option>                          
+                              
+                            </select>
+                        </div>
+                    </div> 
+                </div>    
                       <div class="col-md-12" id="serial" style="display:none;">
                         <div class="form-group">
                           <label>Product Serial No *</label>
-                          <input type="text" name="serialno" id="serialno"   class="form-control" placeholder="Product Serial No"  >
+                          <input type="text" name="serialno" id="serialno"   class="form-control" value="{{pddata.product_serialno}}"  >
                       </div>
                       </div>
                       <div class="col-md-12" >  
                           <div class="form-group">
                               <label>Quantity</label>
-                              <input type="text" name="quantity" id="qunval" class="form-control" placeholder="Quantity"  >
+                              <input type="text" name="quantity" id="qunval" class="form-control" value="{{pddata.initial_quantity}}"  >
                           </div>
                       </div>
                       <div class="col-md-12" id="toner" style="display:none;">
                         <div class="form-group">
                             <label>Cartridge Toner</label>
-                            <input type="text" name="toner"   class="form-control" value="{{pddata.cartridge_toner}}"  >
+                            <input type="text" name="toner"  id="toner"   class="form-control" value="{{pddata.cartridge_toner}}"  >
                         </div>
                     </div>
                       <div class="col-md-12">
                           <div class="form-group">
                                   <label>Remark </label>
-                                  <textarea class="form-control" name="remarks" id="exampleFormControlTextarea1" rows="3">{{pddata.remarks}}</textarea>
+                                  <textarea class="form-control" name="remarks" id="remark" rows="3">{{pddata.remarks}}</textarea>
                           </div>
                       </div>
                       {%endfor%}
                   </div>
                   <div class="col-md-12 text-center">
                       <div class="form-group">
-                            <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                            <button type="submit" class="btn btn-primary mr-2" onclick="changeMe()">Submit</button>
                       </div>
                   </div>
                 </form>
@@ -133,55 +115,36 @@
                               {%endif%}
                         {%endfor%}
                           <div class="form-group">
-                              <label>Product Type *</label>
+                              <label>Product Category:-:[Type] *</label>
                               <div class="search_select_box">
                                   <select name="producttype" id="producttype" class="selectpicker form-control" data-style="py-0" data-live-search="true" onchange="checkProductType()">
-                                      <option selected="true" disabled="disabled">--- Select ---</option>                          
-                                      <option value="Consumable">Consumable</option>                          
-                                      <option value="Non-Consumable">Non-Consumable</option>                          
+                                      <option selected="true" disabled="disabled">-- Category:-:[ Type ] --</option>                          
+                                      {%for pclist in list_all_pc%}
+                                      <option value="{{pclist.product_cat_id}}">{{pclist.product_cat_name}}:-:[{{pclist.product_type}}]</option>                          
+                                      {%endfor%}                  
                                   </select>
                               </div>
                           </div> 
-                      </div>
-                      <div class="col-md-12">
-                        <div class="form-group">
-                            <label>Product Category *</label>
-                            <div class="search_select_box" >
-                                <select name="productcat" id="productcat"  class="selectpicker form-control" data-style="py-0" data-live-search="true" onchange="printerProp()" >
-                                  <option selected="true" disabled="disabled">--- Select ---</option>
-                                </select>
-                            </div>
-                        </div> 
-                    </div>
+                      </div>                      
                     <div class="col-md-12">
                       <div class="form-group">
-                          <label>Product Company Name *</label>
+                          <label>Product Company Name :-: [ Model Name] *</label>
                           <div class="search_select_box" >
-                              <select name="productname" id="productname"  class="selectpicker form-control" data-style="py-0" data-live-search="true" onchange="printerProp()" >
-                                <option selected="true" disabled="disabled">--- Select ---</option>
+                              <select name="modelname" id="modelname"  class="selectpicker form-control" data-style="py-0" data-live-search="true">
+                                <option selected="true" disabled="disabled">-- Company Name :-: [ Model Name] --</option>
                               </select>
                           </div>
                       </div> 
-                  </div>
-                      <div class="col-md-12" id="model" style="display:none;">
-                        <div class="form-group">
-                          <label>Product Model Name *</label>
-                          <div class="search_select_box" >
-                              <select name="modelname" id="modelname"  class="selectpicker form-control" data-style="py-0" data-live-search="true" onchange="printerProp()" >
-                                <option selected="true" disabled="disabled">--- Select ---</option>
-                              </select>
-                          </div>
-                      </div> 
-                      </div>
+                  </div>                      
                       <div class="col-md-12" id="serial" style="display:none;">
                         <div class="form-group">
                           <label>Product Serial No *</label>
-                          <input type="text" name="serialno" id="serialno"   class="form-control" placeholder="Product Serial No"  >
+                          <input type="text" name="serialno" id="serialno" class="form-control" placeholder="Product Serial No"  >
                       </div>
                       </div>
                       <div class="col-md-12" >  
                           <div class="form-group">
-                              <label>Quantity</label>
+                              <label>Quantity *</label>
                               <input type="text" name="quantity" id="qunval" class="form-control" placeholder="Quantity"  >
                           </div>
                       </div>
@@ -258,14 +221,11 @@
                                                   </div>
                                                   </td>
                                             </tr>
-                                            {%endfor%}
-                                            
-                                            
+                                            {%endfor%}                             
                                       </tbody>
                                       </table>
                                 </div>
-                            </div>
-                      
+                            </div>                      
                     </div>
                 </div>
               </div>
@@ -276,63 +236,76 @@
     </div>
   </div>
 <script>
-    function checkProductType(){
-        protype=$('#producttype').val();
+  window.onload = (event) => {    
+    checkProductTypeUpdate();
+  };
+  function checkProductTypeUpdate(){
+      $('#producttype').attr('disabled',true);
+      $('#producttype').selectpicker('refresh');
+      $('#modelname').attr('disabled',true);
+      $('#modelname').selectpicker('refresh'); 
+      protype=$('#producttype option:selected').text().search("Non-Consumable");
+      if (protype == -1){
+            document.getElementById('serial').style.display ='none';
+        }
+        else{
+            document.getElementById('serial').style.display ='block';
+        }
+
+        productcat = $("#producttype option:selected").text().search("Printer");;
+  
+        if(productcat ==-1){
+          document.getElementById('toner').style.display ='none';
+        }
+        else{
+          document.getElementById('toner').style.display ='block';
+        }
+    }
+  function checkProductType(){
+      protype=$('#producttype option:selected').text().search("Non-Consumable");
+        procat = $('#producttype').val();
         $.ajax({
           type:"GET",
-          url: "/productCategoryFilter",
+          url: "/productCompanyFilter",
           data:{
-            protype: protype
+            procat: procat
           },
           success: function(data) 
           {
-            $('#productcat').html(data);
-            $('#productcat').selectpicker('refresh');
+            $('#modelname').html(data);
+            $('#modelname').selectpicker('refresh');
           }
         })
         
-        if (protype == 'Consumable'){
-            document.getElementById('model').style.display ='none';
+        if (protype == -1){
             document.getElementById('serial').style.display ='none';
             
             $('#qunval').val("1");
-            $('#qunval').attr('disabled',false);
+            $('#qunval').attr('readonly',false);
         }
         else{
-            document.getElementById('model').style.display ='block';
             document.getElementById('serial').style.display ='block';
             
             $('#qunval').val("1");
-            $('#qunval').attr('disabled',true);
+            $('#qunval').attr('readonly',true);
         }
-    }
 
-    function printerProp(){
-      
-      productcat=$('#productcat').val();
-        $.ajax({
-          type:"GET",
-          url: "/productNameFilter",
-          data:{
-            productcat: productcat
-          },
-          success: function(data) 
-          {
-            $('#productname').html(data);
-            $('#productname').selectpicker('refresh');
-          }
-        })
-      productcat = $("#productcat option:selected").text();
+        productcat = $("#producttype option:selected").text().search("Printer");;
   
-        if(productcat =='Printer'){
-          document.getElementById('toner').style.display ='block';
-        }
-        else{
+        if(productcat ==-1){
           document.getElementById('toner').style.display ='none';
         }
-
-
+        else{
+          document.getElementById('toner').style.display ='block';
+        }
     }
+    function changeMe(){
+      $('#producttype').attr('disabled',false);
+      $('#producttype').selectpicker('refresh');
+      $('#modelname').attr('disabled',false);
+      $('#modelname').selectpicker('refresh'); 
+    }
+    
 </script>
 {% endblock %}
 

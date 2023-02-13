@@ -20,26 +20,17 @@
                                                 <span>Product Details</span>
                                             </div> 
                                         </div>
-                                    </div>  
-
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Product Type *</label>
-                                            <select name="producttype" id="producttype" class="selectpicker form-control" data-style="py-0" onchange="checkProductType()">
-                                                <option selected="true" disabled="disabled">--- Select ---</option>
-                                                <option value="Consumable" >Consumable</option>
-                                                <option value="Non-Consumable">Non-Consumable</option>
-                                            </select>
-                                        </div> 
-                                    </div> 
+                                    </div>                                      
                                     
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Product Category *</label>
+                                            <label>Product Category -- [ Type ] *</label>
                                             <div class="search_select_box">
                                                 <select name="productcat" id="productcat" class="selectpicker form-control" data-style="py-0" data-live-search="true" onchange="getProductList()">
-                                                    <option selected="true" disabled="disabled">--- Select ---</option>                          
+                                                    <option selected="true" disabled="disabled">-- Category :-: [ Type ]--</option>   
+                                                    {%for pdlist in list_of_prod%}
+                                                        <option value="{{pdlist.product_cat_id.product_cat_id}}">{{pdlist.product_cat_id.product_cat_name}} :-: [ {{pdlist.product_cat_id.product_type}} ]</option>   
+                                                    {%endfor%}                       
                                                 </select>
                                             </div>
                                         </div> 
@@ -47,24 +38,14 @@
                                          
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Product*</label>
+                                            <label>Product Company -- [ Model ] *</label>
                                             <div class="search_select_box">
-                                                <select name="product" id="productdet" class="selectpicker form-control" data-style="py-0" data-live-search="true">
+                                                <select name="product" id="productdet" class="selectpicker form-control" data-style="py-0" data-live-search="true" onchange="getProductDetail()">
                                                     <option selected="true" disabled="disabled">--- Select ---</option>                          
                                                 </select>
                                             </div>
                                         </div> 
-                                    </div>    
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Model Name/No *</label>
-                                            <div class="search_select_box" >
-                                                <select name="model" id="model"  class="selectpicker form-control" data-style="py-0" data-live-search="true" >
-                                                    <option selected="true" disabled="disabled">--- Select ---</option>                          
-                                                </select>
-                                            </div>
-                                        </div> 
-                                    </div>     
+                                    </div>                                          
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Serial No *</label>
@@ -78,7 +59,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Quantity</label>
-                                            <input type="text" class="form-control" placeholder="No of Item"  >
+                                            <input type="text" name="quantity" name="quantity" class="form-control" placeholder="No of Item"  >
                                         </div>
                                     </div> 
                                     <div class="col-md-12">  
@@ -167,35 +148,9 @@
        </div>
     </div>
     <script>
-        function checkProductType(){
-            protype=$('#producttype').val();
-            $.ajax({
-                type:"GET",
-                url: "/issueProductCategoryFilter",
-                data:{
-                    protype: protype
-                },
-                success: function(data) 
-                {
-                $('#productcat').html(data);
-                $('#productcat').selectpicker('refresh');
-              }
-            })
-            if (protype == 'Consumable'){
-                $('#model').attr('disabled',true);
-                $('#model').selectpicker('refresh');
-                $('#serial').attr('disabled',true); 
-                $('#serial').selectpicker('refresh');
-            }
-            else{
-                $('#model').attr('disabled',false);
-                $('#model').selectpicker('refresh');
-                $('#serial').attr('disabled',false);
-                $('#serial').selectpicker('refresh');
-            }            
-        }
         function getProductList(){
             productcat=$('#productcat').val();
+
             $.ajax({
                 type:"GET",
                 url: "/issueProductFilter",
@@ -204,26 +159,23 @@
                 },
                 success: function(data) 
                 {
-                    alert(data);
                 $('#productdet').html(data);
                 $('#productdet').selectpicker('refresh');
               }
             })
         }
-        function getProductModelList(){
-            productcat=$('#productcat').val();
+        function getProductDetail(){
+            productdet=$('#productdet').val();
             $.ajax({
                 type:"GET",
-                url: "/issueProductFilter",
+                url: "/issueProductDetailsFilter",
                 data:{
-                    productcat: productcat
+                    productdet: productdet
                 },
                 success: function(data) 
                 {
                     alert(data);
-                $('#productdet').html(data);
-                $('#productdet').selectpicker('refresh');
-              }
+                }
             })
         }
     </script>

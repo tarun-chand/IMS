@@ -7,16 +7,14 @@ def productCategoryFilter(request):
     list_all_protype = ProductCategoryMaster.objects.filter(product_type=request.GET.get('protype'))
     return render(request,"ajaxpage/productAJX.html",{'flag':'productCategoryList','list_all_protype':list_all_protype})
 
-def productNameFilter(request):
-    list_all_product = ProductDetails.objects.filter(product_type=request.GET.get('productname'))
-    return render(request,"ajaxpage/productAJX.html",{'flag':'productCompanyList','list_all_protype':list_all_protype})
+def productCompanyFilter(request):
+    list_all_com = ProductModelMaster.objects.select_related('product_com_id').filter(product_com_id__product_cat_id=request.GET.get('procat'))
+    print(list_all_com.query)
+    return render(request,"ajaxpage/productAJX.html",{'flag':'productCompanyList','list_all_com':list_all_com})
 
 def productNameFilter(request):
-    list_all_product = ProductDetails.objects.filter(product_type=request.GET.get('productname'))
+    list_all_protype = ProductDetails.objects.filter(product_type=request.GET.get('productname'))
     return render(request,"ajaxpage/productAJX.html",{'flag':'productModelList','list_all_protype':list_all_protype})
-
-
-
 
 
 def productCatRedirect(request):
@@ -27,14 +25,14 @@ def productCatSubmit(request):
     pcm = ProductCategoryMaster()
     producttype = request.POST.get('producttype')
     productcatname = request.POST.get('productcategory')
-    is_exists = ProductCategoryMaster.objects.filter(product_type=producttype,product_com_name=productcatname).exists()
+    is_exists = ProductCategoryMaster.objects.filter(product_type=producttype,product_cat_name=productcatname).exists()
     if is_exists:
         messages.info(request, 'Product Category with this Product Type is already exists.!!')
         print("RETURN FROM EXIXST")
         return redirect('/productCatRedirect')
         
     pcm.product_type = producttype
-    pcm.product_com_name = productcatname
+    pcm.product_cat_name = productcatname
     pcm.save()
     messages.success(request, 'Product Category SAVED Successfully...!!')
     return redirect('/productCatRedirect')
@@ -92,7 +90,8 @@ def productCompanyUpdate(request):
     return redirect('/productCompanyRedirect')
 
 def productModelRedirect(request):
-    list_all_pcm = ProductCompanyMaster.objects.select_related('product_cat_id').filter(product_cat_id__product_type="Non-Consumable")
+    # list_all_pcm = ProductCompanyMaster.objects.select_related('product_cat_id').filter(product_cat_id__product_type="Non-Consumable")
+    list_all_pcm = ProductCompanyMaster.objects.select_related('product_cat_id')
     list_all_pmn = ProductModelMaster.objects.all()
     return render(request,"master/product/productModel.html",{'flag':'NEW','list_all_pcm':list_all_pcm,'list_all_pmn':list_all_pmn})
 
@@ -128,28 +127,29 @@ def productModelUpdate(request):
 
 def productDetails(request):
     list_all_pd = ProductDetails.objects.all()
-    return render(request,"master/product/productDetails.html",{'list_all_pd':list_all_pd})
+    list_all_pc = ProductCategoryMaster.objects.all()
+    return render(request,"master/product/productDetails.html",{'list_all_pd':list_all_pd,'list_all_pc':list_all_pc})
 
 
 
 def productDetailsSubmit(request):
     pd = ProductDetails()
-    productcat = ProductCategoryMaster.objects.get(product_cat_id=request.POST.get('productcat'))
-    productname = request.POST.get('productname')
-    modelname = request.POST.get('modelname')
+    productcat = ProductCategoryMaster.objects.get(product_cat_id=request.POST.get('producttype'))
+    productmodel = ProductModelMaster.objects.get(product_mod_id=request.POST.get('modelname'))
+    productcmpy = ProductCompanyMaster.objects.get(product_com_id=productmodel.product_com_id.product_com_id) 
     serialno = request.POST.get('serialno')
     quantity = request.POST.get('quantity')
     toner = request.POST.get('toner')
     remarks = request.POST.get('remarks')
 
-    is_exists = ProductDetails.objects.filter(product_cat_id=productcat,product_name=productname,product_model=modelname,product_serialno=serialno,initial_quantity=quantity,cartridge_toner=toner,remarks=remarks).exists()
+    is_exists = ProductDetails.objects.filter(product_cat_id=productcat,product_name=productcmpy,product_model=productmodel,product_serialno=serialno,initial_quantity=quantity,cartridge_toner=toner).exists()
     if is_exists:
         messages.info(request, 'Product Detail with Given Details is already exists.!!')
         print("RETURN FROM EXIXST")
         return redirect('/productDetails')        
     pd.product_cat_id = productcat
-    pd.product_name = productname
-    pd.product_model = modelname
+    pd.product_name = productcmpy
+    pd.product_model = productmodel
     pd.product_serialno = serialno
     pd.initial_quantity = quantity
     pd.cartridge_toner = toner
@@ -163,13 +163,14 @@ def productDetailsSubmit(request):
 def productDetailsUpdateRedirect(request):
     pddata = ProductDetails.objects.filter(product_id=request.GET.get('pdid'))
     list_all_pd = ProductDetails.objects.all()
-    return render(request,"master/product/productDetails.html",{'flag':'UPDATE','pddata':pddata,'list_all_pd':list_all_pd})
+    list_all_pc = ProductCategoryMaster.objects.all()
+    return render(request,"master/product/productDetails.html",{'flag':'UPDATE','pddata':pddata,'list_all_pd':list_all_pd,'list_all_pc':list_all_pc})
 
 def productDetailsUpdate(request):
     pd = ProductDetails.objects.get(product_id=request.POST.get('pdid'))
-    pd.product_cat_id = ProductCategoryMaster.objects.get(product_cat_id=request.POST.get('productcat'))
-    pd.product_name = request.POST.get('productname')
-    pd.product_model = request.POST.get('modelname')
+    pd.product_cat_id = ProductCategoryMaster.objects.get(product_cat_id=request.POST.get('producttype'))
+    pd.product_model = ProductModelMaster.objects.get(product_mod_id=request.POST.get('modelname'))
+    pd.product_name = ProductCompanyMaster.objects.get(product_com_id=pd.product_model.product_com_id.product_com_id) 
     pd.product_serialno = request.POST.get('serialno')
     pd.initial_quantity = request.POST.get('quantity')
     pd.cartridge_toner = request.POST.get('toner')
