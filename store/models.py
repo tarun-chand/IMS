@@ -44,13 +44,13 @@ class ProductDetails(models.Model):
         ProductModelMaster, on_delete=models.CASCADE)
     product_serialno = models.CharField(max_length=250,default='None', editable=False)
     entry_date = models.DateField(auto_now_add=True)
-    initial_quantity = models.IntegerField(default=1)
-    current_quantity = models.IntegerField(editable = False)
+    initial_quantity = models.IntegerField(editable = False,default=1)
+    current_quantity = models.IntegerField()
     cartridge_toner = models.CharField(max_length=250)
     remarks = models.CharField(max_length=300)
 
     def save(self, *args, **kwargs):
-        self.current_quantity = self.initial_quantity
+        
         super(ProductDetails, self).save(*args, **kwargs)
 
 class UserDesignationMaster(models.Model):
@@ -62,9 +62,13 @@ class UserDesignationMaster(models.Model):
     def __str__(self):
         return self.usr_des_name
 
+class CourtEstablishmentMaster(models.Model):
+    est_id = models.AutoField(primary_key=True)
+    est_name = models.CharField(max_length=250)
 
 class BuildingMaster(models.Model):
     building_id = models.AutoField(primary_key=True)
+    est_id = models.ForeignKey(CourtEstablishmentMaster, on_delete=models.CASCADE)
     building_name = models.CharField(max_length=250)
     
     def __str__(self):
@@ -77,7 +81,7 @@ class SectionDetails(models.Model):
     section_type = models.CharField(max_length=10, choices=(
         ('Court', 'Court'), ('Section', 'Section')))
     section_name = models.CharField(max_length=250)
-    def __str__(self):
+    def __str__(self): 
         return self.section_name
     
 
@@ -102,25 +106,28 @@ class UserDetails(models.Model):
     usr_name = models.CharField(max_length=250)
     usr_mobile = models.CharField(max_length=250)
     entry_date = models.DateField(auto_now_add=True)
-    location_id = models.ForeignKey(LocationDetails, on_delete=models.CASCADE)
     deleted = models.BooleanField(default=False)
 
     
-
+# Add location id along with product and user details (ID) 
 class TransactionDetails(models.Model):
     trans_id = models.AutoField(primary_key=True)
+    trans_type = models.CharField(max_length=100)
+    trans_date = models.DateField()
+    received_status = models.CharField(max_length=5)
+    return_flag = models.IntegerField(default=0)
+
+class ProductTransactionDetails(models.Model):
+    pro_trans_id = models.AutoField(primary_key=True)
+    trans_id  = models.ForeignKey(
+        TransactionDetails, on_delete=models.CASCADE)
     product_id  = models.ForeignKey(
         ProductDetails, on_delete=models.CASCADE) 
     usr_id =  models.ForeignKey(
         UserDetails, on_delete=models.CASCADE)
-    location_id = models.ForeignKey(
-        LocationDetails, on_delete=models.CASCADE)
-    trans_tpye = models.CharField(max_length=50, choices=(
-        ('Issued', 'Issued'),('AtComputerSection', 'At Computer Section')))
-    trans_date = models.DateField()
+    location_id = models.ForeignKey(LocationDetails, on_delete=models.CASCADE,default=0)
     no_of_item = models.IntegerField()
     remarks = models.CharField(max_length=250)
-    received_status = models.IntegerField()
 
 
 class HealthStatusDetails(models.Model):

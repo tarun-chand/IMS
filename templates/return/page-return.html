@@ -1,5 +1,12 @@
 {% extends "home.html" %}
 {% block returnDetails %} 
+
+<style>
+  .mytab.table.table-responsive tr td{
+  padding: 5px !important;
+  margin: 5px !important;
+}
+</style>
     <div class="content-page">
       <div class="container-fluid add-form-list">
         <div class="row">
@@ -11,352 +18,218 @@
                 </div>
               </div>
               <div class="card-body">
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="form-group">
-                      <div class="heading-keeper">
-                        <span>User Details</span>
+                <form action="{% url 'returnGetIssueStuff' %}" data-toggle="validator" method="post">
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                          <label> Issued To *</label>
+                          <select name="issueto" id="issueto" class="selectpicker form-control" data-style="py-0" onchange="getUserDetails()">
+                              <option selected="true" disabled="disabled">--- Select ---</option>
+                              <option value="Staff">Staff</option>
+                              <option value="Judge">Judge</option>
+                          </select>
+                      </div> 
+                    </div>
+                    <div class="col-md-6" >
+                      <div class="form-group">
+                          <label>Receiver Name :-: [Designation] *</label>
+                          <div class="search_select_box">
+                              <select name="userdetail" id="userdetail" class="selectpicker form-control" data-style="py-0" data-live-search="true">
+                                  <option selected="true" disabled="disabled">--- Select ---</option>                          
+                              </select>
+                          </div>
+                      </div> 
+                    </div> 
+                    <div class="col-md-12">
+                      <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary mr-2" >
+                          Get Details
+                        </button>
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Return By *</label>
-                      <select
-                        name="issueto"
-                        class="selectpicker form-control"
-                        data-style="py-0"
-                      >
-                        <option selected="true" disabled="disabled">
-                          --- Select ---
-                        </option>
-                        <option>Staff</option>
-                        <option>Judge</option>
-                      </select>
-                    </div>
+                </form>
+                <form action="{% url 'returnDetailsSubmit' %}" data-toggle="validator" method="post">
+                  {% csrf_token %}
+                  {%if flag == 'DATA' %}
+                    <div class="row">                  
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <div class="heading-keeper">
+                            <span style="padding: 2px 10px"
+                              >List of Assetes Owned By ==></span
+                            >
+                            <h5 style="display: inline-block; margin-left: 20px;font-size: 30px;">
+                              {{user_name}}
+                            </h5>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-12">
+                        <div class="table-responsive rounded mb-3">
+                          <table class="data-table table mb-0 tbl-server-info">
+                            <thead class="bg-white text-uppercase">
+                              <tr class="ligth ligth-data">
+                                <th></th>
+                                <th>Issue Date</th>
+                                <th>Product Details</th>
+                                <th>Section Name<br>(Location)</th>
+                                <th>Issued<br>Quantity</th>
+                                <th>Return<br>Quantity</th>
+                                <th>Product Status</th>
+                                <th>Is Product Healthy ?</th>
+                                <th>Health Remarks</th>
+                              </tr>
+                            </thead>
+                            <tbody class="ligth-body">
+                              {% for trn in trn_det_list%} 
+                              
+                                <tr>
+                                  <td>
+                                    <input type="hidden" class="hold" name="holder" value="off">
+                                    <input type="hidden" name="trn_no" value="{{trn.trans_id}}">                                                                                         
+                                    <div class="checkbox d-inline-block">
+                                      <input
+                                        type="checkbox"
+                                        class="checkbox-input"
+                                        id="checkbox2"
+                                      />
+                                      <label for="checkbox2" class="mb-0"></label>
+                                    </div>
+                                  </td>
+                                  <td>{{trn.trans_date}}</td>
+                                  <td>
+                                    <input type="hidden" name="product_id" value="{{trn.product_id.product_id}}">
+                                    <span class="text-muted">{{trn.product_id.product_cat_id.product_cat_name}} -> </span>  {{trn.product_id.product_name.product_com_name}} {%if trn.product_id.product_cat_id.product_type != 'Consumable'%} - {{trn.product_id.product_model.product_mod_name}} <br> <span class="text-muted">Serial No : </span>{{trn.product_id.product_serialno}} {%endif%}
+                                    <!-- <table class="mytab table table-responsive">
+                                      <tr>
+                                        <td>Company Name:</td>
+                                        <td><span class="text-muted"> {{trn.product_id.product_name.product_com_name}}</span></td>
+                                      </tr>
+                                      {%if trn.product_id.product_cat_id.product_type != 'Consumable'%}
+                                        <tr>
+                                          <td>Model Name/No:</td>
+                                          <td><span class="text-muted"> {{trn.product_id.product_model.product_mod_name}}</span></td>
+                                        </tr>
+                                        <tr>
+                                          <td>Serial No :</td>
+                                          <td><span class="text-muted"> {{trn.product_id.product_serialno}}</span></td>
+                                        </tr>
+                                      {%endif%}
+                                      <tr>
+                                        <td>Product Category : </td>
+                                        <td><span class="text-muted"> {{trn.product_id.product_cat_id.product_cat_name}}</span></td>
+                                      </tr>
+                                      <tr>
+                                        <td>Product Type:</td>
+                                        <td><span class="text-muted"> {{trn.product_id.product_cat_id.product_type}}</span></td>
+                                      </tr>
+                                    </table> -->
+                                  </td>
+                                  <td>
+                                    <input type="hidden" name="usr_id" value="{{trn.usr_id.usr_id}}">
+                                    {{trn.usr_id.location_id.section_id.section_name}}
+                                    <!-- <table class="mytab table table-responsive">                                    
+                                      <tr>
+                                        <td>Section Name:</td>
+                                        <td><span class="text-muted"> {{trn.usr_id.location_id.section_id.section_name}}</span></td>
+                                      </tr>
+                                      <tr>
+                                        <td>Building Name:</td>
+                                        <td><span class="text-muted"> {{trn.usr_id.location_id.section_id.building_name.building_name}}</span></td>
+                                      </tr>
+                                      <tr>
+                                        <td>Floor:</td>
+                                        <td><span class="text-muted"> {{trn.usr_id.location_id.floor}}</span></td>
+                                      </tr>
+                                      <tr>
+                                        <td>Room No: </td>
+                                        <td><span class="text-muted">{{trn.usr_id.location_id.roomno}}</span></td>
+                                      </tr>
+                                      <tr>
+                                        <td>Landmark:</td>
+                                        <td><span class="text-muted"> {{trn.usr_id.location_id.landmark}}</span></td>
+                                      </tr>
+                                    </table> -->
+                                  </td>
+                                  <td>                                    
+                                    <div class="form-group"><input type="text" value="{{trn.no_of_item}}" name="Iquantity" id="Iquantity" class="form-control" size="4"  readonly></div>
+                                  </td>
+                                  <td>
+                                    <div class="form-group"><input type="text" name="Rquantity" id="Rquantity" class="form-control" placeholder="No of Returning Item" size="4" ></div>
+                                  </td>    
+                                  <td>
+                                    <div class="form-group">
+                                      <select
+                                      name="productstatus"
+                                      class="selectpicker form-control"
+                                      data-style="py-0"
+                                      >
+                                      <option selected="true"  value="">
+                                            --- Select ---
+                                      </option>
+                                      <option value="Working">Working</option>
+                                      <option value="Not Working">Not Working</option>
+                                      </select>
+                                      </div>
+                                  </td>                                                                
+                                  <td>
+                                    <div class="form-group">
+                                      <select
+                                      name="producthealth"
+                                      class="selectpicker form-control"
+                                      data-style="py-0"
+                                      >
+                                      <option selected="true" value="">
+                                            --- Select ---
+                                      </option>
+                                      <option value="Yes">YES</option>
+                                      <option value="No">NO</option>
+                                      </select>
+                                      </div>
+
+                                  </td>                                  
+                                  
+                                  <td>
+                                    <div class="form-group">
+                                    <textarea
+                                    class="form-control"
+                                    id="exampleFormControlTextarea1"
+                                    name = "remarks"
+                                    rows="1"
+                                  ></textarea>
+                                </div>
+                                </td>
+                                </tr>
+                              {%endfor%}
+                              
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Return Date *</label>
+                          <input type="date" name="returnDate" id="ret_date" class="form-control" >
                   </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Giver Name*</label>
-                      <div class="search_select_box">
-                        <select
-                          name="producttype"
-                          class="selectpicker form-control"
-                          data-style="py-0"
-                          data-live-search="true"
-                        >
-                          <option selected="true" disabled="disabled">
-                            --- Select ---
-                          </option>
-                          <option>Amit Kumar Sahu (System Assistance)</option>
-                          <option>Rishikesh Nirmalkar (System Officer)</option>
-                          <option>Tikesh Kumar Sahu (System Assistance)</option>
-                          <option>
-                            Tarun Kumar Chandrakar (Assistant Programmer)
-                          </option>
-                        </select>
+                      </div>
+                      <div class="custom-control custom-checkbox custom-checkbox-color-check custom-control-inline">            
+                        <input type="checkbox" class="custom-control-input bg-success" name="receiving" id="customCheck-2" >
+                        <label class="custom-control-label" for="customCheck-2">Is the person Available for Receiving......?*</label>
+                     </div>
+                      
+                      <div class="col-md-12">
+                        <div class="form-group text-center">
+                          <button type="submit" class="btn btn-primary mr-2">
+                            Submit
+                          </button>
+                          
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-md-12">
-                    <div class="form-group text-center">
-                      <button type="submit" class="btn btn-primary mr-2">
-                        Get Details
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <input type="hidden" value="At Computer Section" />
-                  <div class="col-md-12">
-                    <div class="form-group">
-                      <div class="heading-keeper">
-                        <span style="padding: 2px 50px"
-                          >List of Assetes Owned By</span
-                        >
-                        <h5 style="display: inline-block; margin-left: 20px">
-                          Tarun Kumar Chandrakar (Assistance Programmer)
-                        </h5>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-12">
-                    <div class="table-responsive rounded mb-3">
-                      <table class="data-table table mb-0 tbl-server-info">
-                        <thead class="bg-white text-uppercase">
-                          <tr class="ligth ligth-data">
-                            <th>
-                              <div class="checkbox d-inline-block">
-                                <input
-                                  type="checkbox"
-                                  class="checkbox-input"
-                                  id="checkAll"
-                                />
-                                <label for="checkbox1" class="mb-0"></label>
-                              </div>
-                            </th>
-                            <th>Issue Date</th>
-                            <th>Product Details</th>
-                            <th>Location Details</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody class="ligth-body">
-                          <tr>
-                            <td>
-                              <div class="checkbox d-inline-block">
-                                <input
-                                  type="checkbox"
-                                  class="checkbox-input"
-                                  id="checkbox2"
-                                />
-                                <label for="checkbox2" class="mb-0"></label>
-                              </div>
-                            </td>
-                            <td>01 Jan 2022</td>
-                            <td>
-                              Product Name:PN<br />Model Name/No:MNN<br />Serial
-                              No : SN<br />Product Category:PC<br />Product
-                              Type:PT
-                            </td>
-                            <td>
-                              Section Name:SN<br />Building Name:BN<br />Floor:F<br />Room
-                              No : RN<br />Location:LOC
-                            </td>
-                            <td>
-                              <div
-                                class="d-flex align-items-center list-action"
-                              >
-                                <a
-                                  class="badge bg-success mr-2"
-                                  data-toggle="tooltip"
-                                  data-placement="top"
-                                  title=""
-                                  data-original-title="Edit"
-                                  href="#"
-                                  >Edit</a
-                                >
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="checkbox d-inline-block">
-                                <input
-                                  type="checkbox"
-                                  class="checkbox-input"
-                                  id="checkbox2"
-                                />
-                                <label for="checkbox2" class="mb-0"></label>
-                              </div>
-                            </td>
-                            <td>31 Jan 2022</td>
-                            <td>
-                              Product Name:PN<br />Model Name/No:MNN<br />Serial
-                              No : SN<br />Product Category:PC<br />Product
-                              Type:PT
-                            </td>
-                            <td>
-                              Section Name:SN<br />Building Name:BN<br />Floor:F<br />Room
-                              No : RN<br />Location:LOC
-                            </td>
-                            <td>
-                              <div
-                                class="d-flex align-items-center list-action"
-                              >
-                                <a
-                                  class="badge bg-success mr-2"
-                                  data-toggle="tooltip"
-                                  data-placement="top"
-                                  title=""
-                                  data-original-title="Edit"
-                                  href="#"
-                                  >Edit</a
-                                >
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="checkbox d-inline-block">
-                                <input
-                                  type="checkbox"
-                                  class="checkbox-input"
-                                  id="checkbox2"
-                                />
-                                <label for="checkbox2" class="mb-0"></label>
-                              </div>
-                            </td>
-                            <td>23 feb 2022</td>
-                            <td>
-                              Product Name:PN<br />Model Name/No:MNN<br />Serial
-                              No : SN<br />Product Category:PC<br />Product
-                              Type:PT
-                            </td>
-                            <td>
-                              Section Name:SN<br />Building Name:BN<br />Floor:F<br />Room
-                              No : RN<br />Location:LOC
-                            </td>
-                            <td>
-                              <div
-                                class="d-flex align-items-center list-action"
-                              >
-                                <a
-                                  class="badge bg-success mr-2"
-                                  data-toggle="tooltip"
-                                  data-placement="top"
-                                  title=""
-                                  data-original-title="Edit"
-                                  href="#"
-                                  >Edit</a
-                                >
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="checkbox d-inline-block">
-                                <input
-                                  type="checkbox"
-                                  class="checkbox-input"
-                                  id="checkbox2"
-                                />
-                                <label for="checkbox2" class="mb-0"></label>
-                              </div>
-                            </td>
-                            <td>01 Jan 2022</td>
-                            <td>
-                              Product Name:PN<br />Model Name/No:MNN<br />Serial
-                              No : SN<br />Product Category:PC<br />Product
-                              Type:PT
-                            </td>
-                            <td>
-                              Section Name:SN<br />Building Name:BN<br />Floor:F<br />Room
-                              No : RN<br />Location:LOC
-                            </td>
-                            <td>
-                              <div
-                                class="d-flex align-items-center list-action"
-                              >
-                                <a
-                                  class="badge bg-success mr-2"
-                                  data-toggle="tooltip"
-                                  data-placement="top"
-                                  title=""
-                                  data-original-title="Edit"
-                                  href="#"
-                                  >Edit</a
-                                >
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="checkbox d-inline-block">
-                                <input
-                                  type="checkbox"
-                                  class="checkbox-input"
-                                  id="checkbox2"
-                                />
-                                <label for="checkbox2" class="mb-0"></label>
-                              </div>
-                            </td>
-                            <td>01 Jan 2022</td>
-                            <td>
-                              Product Name:PN<br />Model Name/No:MNN<br />Serial
-                              No : SN<br />Product Category:PC<br />Product
-                              Type:PT
-                            </td>
-                            <td>
-                              Section Name:SN<br />Building Name:BN<br />Floor:F<br />Room
-                              No : RN<br />Location:LOC
-                            </td>
-                            <td>
-                              <div
-                                class="d-flex align-items-center list-action"
-                              >
-                                <a
-                                  class="badge bg-success mr-2"
-                                  data-toggle="tooltip"
-                                  data-placement="top"
-                                  title=""
-                                  data-original-title="Edit"
-                                  href="#"
-                                  >Edit</a
-                                >
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="checkbox d-inline-block">
-                                <input
-                                  type="checkbox"
-                                  class="checkbox-input"
-                                  id="checkbox2"
-                                />
-                                <label for="checkbox2" class="mb-0"></label>
-                              </div>
-                            </td>
-                            <td>01 Jan 2022</td>
-                            <td>
-                              Product Name:PN<br />Model Name/No:MNN<br />Serial
-                              No : SN<br />Product Category:PC<br />Product
-                              Type:PT
-                            </td>
-                            <td>
-                              Section Name:SN<br />Building Name:BN<br />Floor:F<br />Room
-                              No : RN<br />Location:LOC
-                            </td>
-                            <td>
-                              <div
-                                class="d-flex align-items-center list-action"
-                              >
-                                <a
-                                  class="badge bg-success mr-2"
-                                  data-toggle="tooltip"
-                                  data-placement="top"
-                                  title=""
-                                  data-original-title="Edit"
-                                  href="#"
-                                  >Edit</a
-                                >
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Return Date *</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Date"
-                      />
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Return Remark *</label>
-                      <textarea
-                        class="form-control"
-                        id="exampleFormControlTextarea1"
-                        rows="1"
-                      ></textarea>
-                    </div>
-                  </div>
-                  <div class="col-md-12">
-                    <div class="form-group text-center">
-                      <button type="submit" class="btn btn-primary mr-2">
-                        Submit
-                      </button>
-                      <button type="reset" class="btn btn-danger">Reset</button>
-                    </div>
-                  </div>
-                </div>
+                  {%endif%}
+                </form>
                 <!--END OF TABLE row-->
               </div>
             </div>
@@ -366,7 +239,39 @@
         <!-- Page end  -->
       </div>
     </div>
-
+    <script>
+      document.getElementById("ret_date").valueAsDate = new Date();
+      function getUserDetails(){
+                issueto=$('#issueto').val();
+                $.ajax({
+                    type:"GET",
+                    url: "/issueUserDetailsFilter",
+                    data:{
+                        issueto: issueto
+                    },
+                    success: function(data) 
+                    {                   
+                        $('#userdetail').html(data);
+                        $('#userdetail').selectpicker('refresh');
+                    }
+                })
+            }
+      function getIssueStuff(){
+        userdetail =$('#userdetail').val();
+        $.ajax({
+                    type:"GET",
+                    url: "/returngetIssueStuff",
+                    data:{
+                      userdetail: userdetail
+                    },
+                    success: function(data) 
+                    {                   
+                        $('#userdetail').html(data);
+                        $('#userdetail').selectpicker('refresh');
+                    }
+                })
+      }  
+      </script>
     {% endblock %}
 
 

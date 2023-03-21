@@ -33,7 +33,7 @@
                               <label>Building Name *</label>
                               <div class="search_select_box">
                                   <select name="buildingname" class="selectpicker form-control" data-style="py-0" data-live-search="true">
-                                      <option selected="true" value="{{scdata.building_name_id}}">{{scdata.building_name}}"</option> 
+                                      <option selected="true" value="{{scdata.building_name_id}}">{{scdata.building_name}}</option> 
                                       {%for bmlist in list_all_bm%}  
                                       <option value="{{bmlist.building_id}}">{{bmlist.building_name}}</option> 
                                       {%endfor%}                       
@@ -45,7 +45,7 @@
                       <div class="form-group">
                           <label>Section Type *</label>
                           <select name="sectiontype" class="selectpicker form-control" data-style="py-0">
-                            <option selected="true" value="{{scdata.section_type}}">{{scdata.section_type}}"</option> 
+                            <option selected="true" value="{{scdata.section_type}}">{{scdata.section_type}}</option> 
                               <option value="Court">Court</option>
                               <option value="Section">Section</option>
                           </select>
@@ -153,7 +153,7 @@
                                       <table class="data-table table mb-0 tbl-server-info">
                                       <thead class="bg-white text-uppercase">
                                             <tr class="ligth ligth-data">
-                                            
+                                                  <th>Establishment Name</th>
                                                   <th>Building Name</th>
                                                   <th>Section Type</th>
                                                   <th>Section Name</th>
@@ -163,6 +163,7 @@
                                       <tbody class="ligth-body">
                                         {%for sclist in list_all_sc%} 
                                             <tr>
+                                                  <td>{{sclist.building_name.est_id.est_name}}</td>
                                                   <td>{{sclist.building_name}}</td>
                                                   <td>{{sclist.section_type}}</td> 
                                                   <td>{{sclist.section_name}}</td>                                   

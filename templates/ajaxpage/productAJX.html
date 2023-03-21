@@ -1,28 +1,28 @@
 {%if flag == 'productCategoryList'%}
-
     <option selected="true" disabled="disabled">--- Select ---</option>                           
     {%for pclist in list_all_protype %}
     <option value="{{pclist.product_cat_id}}">{{pclist.product_cat_name}}</option>
     {%endfor%}
 
 {%elif flag == 'productCompanyList'%}    
-    <option  disabled="disabled">-- Company Name :-: [ Model Name] --</option>              
+    <option selected="true"  disabled="disabled">-- Company Name :-: [ Model Name] --</option>              
     {%for pclist in list_all_com %}
     <option value="{{pclist.product_mod_id}}">{{pclist.product_com_id.product_com_name}} :-: {{pclist.product_mod_name}}</option>
     {%endfor%}
 
-{%elif flag == 'productList'%}
+{%elif flag == 'ProductModelList'%}
 
-    <option selected="true" disabled="disabled">--- Select ---</option>                           
-    {%for prodlist in list_all_prod %}
-    <option value="{{prodlist.product_model.product_mod_id}}">{{prodlist.product_name.product_com_name}} :-: [ {{prodlist.product_model.product_mod_name}} ]</option>
+    <option selected="true" disabled="disabled">-- Company Name -> Model Name -> SerialNo --</option>                           
+    {%for prodlist in list_all_mod %}
+    <option value="{{prodlist.product_id}}">{{prodlist.product_name.product_com_name}} -> {{prodlist.product_model.product_mod_name}} -> {{prodlist.product_serialno}} </option>
     {%endfor%}
 
-{%elif flag == 'productList'%}
+{%elif flag == 'UserDetailList'%}
 
-    <option selected="true" disabled="disabled">--- Select ---</option>                           
-    {%for prodlist in list_all_prod %}
-    <option value="{{prodlist.product_model.product_mod_id}}">{{prodlist.product_name.product_com_name}} :-: [ {{prodlist.product_model.product_mod_name}} ]</option>
-    {%endfor%}
+        <option selected="true" disabled="disabled">-- Receiver Name :-: [Designation] --</option>                           
+        {%for usrlist in list_all_usr %}
+        <option value="{{usrlist.usr_id}}">{{usrlist.usr_name}} :-: [{{usrlist.usr_des_id.usr_des_name}}]</option>
+        {%endfor%}
+
     
 {%endif%}

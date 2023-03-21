@@ -2,6 +2,7 @@
 {% block productDetails %}
 <div class="content-page">
     <div class="container-fluid add-form-list">
+      <input type="hidden" id="flag" value="{{flag}}">
       <div class="row">
         {%if flag == 'UPDATE'%}
           <div class="col-sm-3">
@@ -240,10 +241,13 @@
     checkProductTypeUpdate();
   };
   function checkProductTypeUpdate(){
-      $('#producttype').attr('disabled',true);
-      $('#producttype').selectpicker('refresh');
-      $('#modelname').attr('disabled',true);
-      $('#modelname').selectpicker('refresh'); 
+      var flag = $('#flag').val();
+      if (flag == 'UPDATE'){
+        $('#producttype').attr('disabled',true);
+        $('#producttype').selectpicker('refresh');
+        $('#modelname').attr('disabled',true);
+        $('#modelname').selectpicker('refresh'); 
+      }
       protype=$('#producttype option:selected').text().search("Non-Consumable");
       if (protype == -1){
             document.getElementById('serial').style.display ='none';

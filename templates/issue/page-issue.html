@@ -10,137 +10,154 @@
                                <h4 class="card-title">New Issue</h4>
                            </div>
                        </div>
-                       <div class="card-body">
-                           <form action="page-list-returns.html" data-toggle="validator">
-                               <div class="row">                                  
-                                <input type="hidden" value="ISSUED">   
-                                    <div class="col-md-12">  
+                        <div class="card-body">                           
+                            <div class="row">                                  
+                                    <div class="col-md-12">
+                                        {%for msg in messages%}
+                                            {% if msg.tags == "info" %}
+                                                    <div class="alert alert-warning" role="alert">
+                                                        <div class="iq-alert-text">
+                                                                <b>{{ msg }}</b> 
+                                                        </div>
+                                                    </div>
+                                            {% elif msg.tags == "success" %}
+                                            <div class="alert alert-success" role="alert">
+                                                    <div class="iq-alert-text">
+                                                        <b>{{ msg }}</b> 
+                                                    </div>
+                                            </div>
+                                            {%endif%}
+                                        {%endfor%}
+                                    </div>    
+                                    <div class="col-md-2" >                      
                                         <div class="form-group">
-                                            <div class="heading-keeper">
-                                                <span>Product Details</span>
-                                            </div> 
+                                                <label>Issue Date *</label>
+                                                <input type="date" name="issueDate" id="iss_date" class="form-control" placeholder="Date">
                                         </div>
-                                    </div>                                      
-                                    
-                                    <div class="col-md-6">
+                                    </div>  
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label> Issued To *</label>
+                                            <select name="issueto" id="issueto" class="selectpicker form-control" data-style="py-0" onchange="getUserDetails()">
+                                                <option selected="true" disabled="disabled">--- Select ---</option>
+                                                <option value="Staff">Staff</option>
+                                                <option value="Judge">Judge</option>
+                                            </select>
+                                        </div> 
+                                    </div>     
+                                    <div class="col-md-4" >
+                                        <div class="form-group">
+                                            <label>Receiver Name :-: [Designation] *</label>
+                                            <div class="search_select_box">
+                                                <select name="userdetail" id="userdetail" class="selectpicker form-control" data-style="py-0" data-live-search="true">
+                                                    <option selected="true" disabled="disabled">--- Select ---</option>                          
+                                                </select>
+                                            </div>
+                                        </div> 
+                                    </div>   
+                                    <div class="col-md-4" >
+                                        <div class="form-group">
+                                            <label>Posted At *</label>
+                                            <div class="search_select_box">
+                                                <select name="locationdetail" id="locationdetail" class="selectpicker form-control" data-style="py-0" data-live-search="true">
+                                                    <option selected="true" disabled="disabled">--- Select ---</option>  
+                                                    {%for loc in list_of_loc%}
+                                                        <option value="{{loc.location_id}}">{{loc.section_id.section_name}} - ({{loc.section_id.section_type}}) -[{{loc.floor}} - R.No:{{loc.roomno}} - {{loc.section_id.building_name.building_name}} - {{loc.section_id.building_name.est_id.est_name}}] </option>
+                                                    {%endfor%}                 
+                                                </select>
+                                            </div>
+                                        </div> 
+                                    </div>                                                                                                                                       
+                                    <div class="col-md-2">
                                         <div class="form-group">
                                             <label>Product Category -- [ Type ] *</label>
                                             <div class="search_select_box">
-                                                <select name="productcat" id="productcat" class="selectpicker form-control" data-style="py-0" data-live-search="true" onchange="getProductList()">
+                                                <select name="productcat" id="productcat" class="selectpicker form-control" data-style="py-0" data-live-search="true" onchange="getProductModelList()">
                                                     <option selected="true" disabled="disabled">-- Category :-: [ Type ]--</option>   
-                                                    {%for pdlist in list_of_prod%}
-                                                        <option value="{{pdlist.product_cat_id.product_cat_id}}">{{pdlist.product_cat_id.product_cat_name}} :-: [ {{pdlist.product_cat_id.product_type}} ]</option>   
+                                                    {%for pdlist in list_of_cat%}
+                                                        <!-- <option value="{{pdlist.product_cat_id.product_cat_id}}">{{pdlist.product_cat_id.product_cat_name}} :-: [ {{pdlist.product_cat_id.product_type}} ]</option>    -->
+                                                        <option value="{{pdlist.product_cat_id}}">{{pdlist.product_cat_name}} :-: [ {{pdlist.product_type}} ]</option>   
                                                     {%endfor%}                       
                                                 </select>
                                             </div>
                                         </div> 
-                                    </div>
-                                         
-                                    <div class="col-md-6">
+                                    </div>                                         
+                                    <div class="col-md-4" style="max-width: 27%;">
                                         <div class="form-group">
-                                            <label>Product Company -- [ Model ] *</label>
+                                            <label>Product Company Name -> Model Name -> Serial No *</label>
                                             <div class="search_select_box">
-                                                <select name="product" id="productdet" class="selectpicker form-control" data-style="py-0" data-live-search="true" onchange="getProductDetail()">
-                                                    <option selected="true" disabled="disabled">--- Select ---</option>                          
+                                                <select name="productdet" id="productdet" class="selectpicker form-control" data-style="py-0" data-live-search="true" onchange="getOtherProductDetails()">
+                                                    <option selected="true" disabled="disabled">-- Company Name -> Model Name -> Serial No --</option>                          
                                                 </select>
                                             </div>
                                         </div> 
-                                    </div>                                          
-                                    <div class="col-md-6">
+                                    </div>                                                                                                                  
+                                    <div class="col-sm-2" style="max-width: 10%">
                                         <div class="form-group">
-                                            <label>Serial No *</label>
-                                            <div class="search_select_box">
-                                                <select name="serial" id="serial" class="selectpicker form-control" data-style="py-0" data-live-search="true" >
-                                                    <option selected="true" disabled="disabled">--- Select ---</option>                          
-                                                </select>
-                                            </div>
-                                        </div> 
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Quantity</label>
-                                            <input type="text" name="quantity" name="quantity" class="form-control" placeholder="No of Item"  >
+                                            <label>Issue Quantity *</label>
+                                            <input type="text" name="quantity" id="quantity" class="form-control" placeholder="No of Item"  >
                                         </div>
                                     </div> 
-                                    <div class="col-md-12">  
+                                    <div class="col-sm-2" style="max-width: 11%">
                                         <div class="form-group">
-                                            <div class="heading-keeper">
-                                                <span>User Details</span>
-                                            </div> 
+                                            <label>Available Quantity</label>
+                                            <input type="text" name="Aquantity" id="Aquantity" class="form-control" placeholder="No of Item" readonly>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-sm-2" style="max-width: 13.5%" >
                                         <div class="form-group">
-                                            <label> Issued To *</label>
-                                            <select name="issueto" class="selectpicker form-control" data-style="py-0">
-                                                <option selected="true" disabled="disabled">--- Select ---</option>
-                                                <option>Staff</option>
-                                                <option>Judge</option>
-                                            </select>
-                                        </div> 
-                                    </div>     
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Receiver Name*</label>
-                                            <div class="search_select_box">
-                                                <select name="producttype" class="selectpicker form-control" data-style="py-0" data-live-search="true">
-                                                    <option selected="true" disabled="disabled">--- Select ---</option>                          
-                                                </select>
-                                            </div>
-                                        </div> 
-                                    </div>                        
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Location Type</label>
-                                            <input type="text" class="form-control" placeholder="Court/Section" readonly >
-                                            <div class="help-block with-errors"></div>
+                                                <label>Product Remark</label>
+                                                <textarea class="form-control" id="premark" rows="1" readonly></textarea>
                                         </div>
-                                    </div> 
-                                       <div class="col-md-6">
-                                           <div class="form-group">
-                                               <label>Section</label>
-                                               <input type="text" class="form-control" placeholder="Enter Customer Name" readonly>
-                                               <div class="help-block with-errors"></div>
-                                           </div>
-                                       </div>   
-                                       <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Building</label>
-                                            <input type="text" class="form-control" placeholder="Enter Customer Name" readonly>
-                                            <div class="help-block with-errors"></div>
-                                        </div>
-                                    </div> 
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Floor</label>
-                                            <input type="text" class="form-control" placeholder="Enter Customer Name" readonly>
-                                            <div class="help-block with-errors"></div>
-                                        </div>
-                                    </div> 
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Room No</label>
-                                            <input type="text" class="form-control" placeholder="Enter Customer Name" readonly>
-                                            <div class="help-block with-errors"></div>
-                                        </div>
-                                    </div>     
-                                    <div class="col-md-6">                      
-                                        <div class="form-group">
-                                                <label>Issue Date *</label>
-                                                <input type="text" class="form-control" placeholder="Date">
-                                        </div>
-                                    </div> 
-                                    <div class="col-md-12">
+                                    </div>
+                                    <div class="col-sm-2" style="max-width: 13.5%" >
                                         <div class="form-group">
                                                 <label>Issue Remark *</label>
-                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                <textarea class="form-control" name="issueRemark" id="issueRemark" rows="1"></textarea>
+                                        </div>
+                                    </div> 
+                                    <div class="col-sm-1">
+                                        <div class="form-group">
+                                                <label>ADD</label>
+                                                <button type="submit" class="mt-1 btn btn-primary mr-2" onclick="addProduct()" >Add</button>
                                         </div>
                                     </div>
-                               </div>                            
-                               <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                               <button type="reset" class="btn btn-danger">Reset</button>
-                           </form>
-                       </div>
+                            </div> 
+                        </div>
+                        <div class="card-body">  
+                                <form action="{% url 'IssueDetailsSubmit' %}" data-toggle="validator" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="dateIssue" id="dateIssue" >
+                                    <input type="hidden" name="receiverName" id="receiverName">
+                                    <input type="hidden" name="postedAt" id="postedAt">
+                                    <div class="row">  
+                                        <div class="col-md-12">
+                                            <table id="productData" class="table  table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S.No</th>                                                  
+                                                        <th>Product Name & Model</th>                                                  
+                                                        <th>Serial No</th>
+                                                        <th>Quantity</th>
+                                                        <th>Remarks</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>     
+                                        </div>                                                                                             
+                                        <div class="custom-control custom-checkbox custom-checkbox-color-check custom-control-inline">            
+                                            <input type="checkbox" class="custom-control-input bg-success" name="receiving" id="customCheck-2" >
+                                            <label class="custom-control-label" for="customCheck-2">Is the person Available for Receiving......?*</label>
+                                        </div>  
+                                        <div class="col-md-12">
+                                            <div class="form-group text-center">                       
+                                                <button type="submit" class="mt-2 btn btn-success">Submit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                        </div>                       
                    </div>
                </div>
            </div> <!-- ROW END-->
@@ -148,12 +165,13 @@
        </div>
     </div>
     <script>
-        function getProductList(){
+        document.getElementById("iss_date").valueAsDate = new Date();
+        function getProductModelList(){
             productcat=$('#productcat').val();
-
+            // alert(productcat);
             $.ajax({
                 type:"GET",
-                url: "/issueProductFilter",
+                url: "/issueProductModelFilter",
                 data:{
                     productcat: productcat
                 },
@@ -164,20 +182,78 @@
               }
             })
         }
-        function getProductDetail(){
+        function getOtherProductDetails(){
             productdet=$('#productdet').val();
             $.ajax({
                 type:"GET",
-                url: "/issueProductDetailsFilter",
+                url: "/issueOtherProductDetailsFilter",
                 data:{
                     productdet: productdet
                 },
                 success: function(data) 
-                {
-                    alert(data);
+                {                   
+                    var result = eval(data)             
+                    $('#Aquantity').val(result[0].current_quantity);
+                    $('#premark').val(result[0].remarks);    
                 }
             })
         }
+
+        function getUserDetails(){
+            issueto=$('#issueto').val();
+            $.ajax({
+                type:"GET",
+                url: "/issueUserDetailsFilter",
+                data:{
+                    issueto: issueto
+                },
+                success: function(data) 
+                {                   
+                    $('#userdetail').html(data);
+                    $('#userdetail').selectpicker('refresh');
+                }
+            })
+        }
+        let s = 0;
+        function addProduct(){
+            idate= $('#iss_date').val();
+            rcv_name = $('#userdetail').val();
+            posted = $('#locationdetail').val();
+            
+
+            if (idate == null || rcv_name == null || posted == null){
+                return false
+            }
+            else{
+
+                $('#dateIssue').val(idate);
+                $('#receiverName').val(rcv_name);
+                $('#postedAt').val(posted);
+
+                procat = $('#productcat option:selected').text();
+                proCatdata = procat.split(":-:");
+                // alert(proCatdata);
+
+                productdet = $('#productdet option:selected').text();
+                prodata = productdet.split("->");
+
+                quantity = $('#quantity').val();
+                issueRemark = $('#issueRemark').val();
+                s=s+1;
+                sno = "<td>"+s+".</td>";
+                pdt = "<td><input name='proId' type='hidden' value='"+$('#productdet').val()+"'>"+proCatdata[0]+":- "+prodata[0]+"("+prodata[1]+")</td>";
+                ser = "<td>"+prodata[2]+"</td>";
+                qun = "<td><input name='proQun' type='hidden' value='"+quantity+"'>"+quantity+"</td>";
+                rem = "<td><input name='proRem' type='hidden' value='"+issueRemark+"'>"+issueRemark+"</td>";
+                del = "<td><input class='mt-2 btn btn-danger' type='button' onClick=$(this).closest('tr').remove() value='Delete'></td>";
+                newRow = '<tr>'+sno+pdt+ser+qun+rem+del+'</tr>';
+                $('#productData tr:last').after(newRow);
+            }
+
+
+        }
+
+        
     </script>
 
 

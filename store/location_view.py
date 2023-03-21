@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse,JsonResponse
-from .models import BuildingMaster,SectionDetails,LocationDetails
+from .models import BuildingMaster,SectionDetails,LocationDetails,CourtEstablishmentMaster
 from django.contrib import messages
 from django.core import serializers
 import json
@@ -10,18 +10,21 @@ import json
 
 def buildingDetailsRedirect(request):
     list_all_bm = BuildingMaster.objects.all()
-    return render(request,"master/location/buildingDetails.html",{'flag':'NEW','list_all_bm':list_all_bm})
+    list_all_est = CourtEstablishmentMaster.objects.all()
+    return render(request,"master/location/buildingDetails.html",{'flag':'NEW','list_all_bm':list_all_bm,'list_all_est':list_all_est})
 
 def buildingDetailsSubmit(request):
     bm = BuildingMaster()
+    est = CourtEstablishmentMaster.objects.get(est_id=request.POST.get('est_id'))
     buildingname = request.POST.get('buildingname')
-    is_exists = BuildingMaster.objects.filter(building_name=buildingname).exists()
+    is_exists = BuildingMaster.objects.filter(building_name=buildingname,est_id=est).exists()
     if is_exists:
-        messages.info(request, 'Building Name is already exists.!!')
+        messages.info(request, 'Building Name with given Establishment  is already exists.!!')
         print("RETURN FROM EXIXST")
         return redirect('/buildingDetailsRedirect')
         # return render(request,"master/product/buildingname.html",{'list_all_bm':list_all_bm})
     bm.building_name = buildingname
+    bm.est_id = est
     bm.save()
     messages.success(request, 'Building Name Saved Successfully...!!')
     return redirect('/buildingDetailsRedirect')
@@ -31,11 +34,13 @@ def buildingDetailsUpdateRedirect(request):
     bmid = request.GET.get('bmid')
     bmdata = BuildingMaster.objects.filter(building_id=bmid)
     list_all_bm = BuildingMaster.objects.all()
-    return render(request,"master/location/buildingDetails.html",{'flag':'UPDATE','bmdata':bmdata,'list_all_bm':list_all_bm})
+    list_all_est = CourtEstablishmentMaster.objects.all()
+    return render(request,"master/location/buildingDetails.html",{'flag':'UPDATE','bmdata':bmdata,'list_all_bm':list_all_bm,'list_all_est':list_all_est})
 
 
 def buildingDetailsUpdate(request):
     bmdata = BuildingMaster.objects.get(building_id=request.POST.get('bmid'))
+    bmdata.est_id=CourtEstablishmentMaster.objects.get(est_id=request.POST.get('est_id'))
     bmdata.building_name=request.POST.get('buildingname')
     bmdata.save()
     messages.success(request, 'Building Name UPDATED Successfully...!!')

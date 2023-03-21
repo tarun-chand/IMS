@@ -152,6 +152,7 @@ def productDetailsSubmit(request):
     pd.product_model = productmodel
     pd.product_serialno = serialno
     pd.initial_quantity = quantity
+    pd.current_quantity = quantity
     pd.cartridge_toner = toner
     pd.remarks = remarks
     pd.save()

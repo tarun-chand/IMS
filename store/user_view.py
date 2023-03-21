@@ -57,16 +57,16 @@ def userDetailsSubmit(request):
     usrdesig =  UserDesignationMaster.objects.get(usr_des_id=request.POST.get('usrdesig'))
     usrname = request.POST.get('usrname')
     usrmobile = request.POST.get('usrmobile')
-    usrloc =   LocationDetails.objects.get(location_id=request.POST.get('usrloc'))
-    print("USER LOCATION----------- ",usrloc)
-    is_exists = UserDetails.objects.filter(usr_des_id=usrdesig,usr_name=usrname,usr_mobile=usrmobile,location_id=usrloc).exists()
+    # usrloc =   LocationDetails.objects.get(location_id=request.POST.get('usrloc'))
+    # print("USER LOCATION----------- ",usrloc)
+    is_exists = UserDetails.objects.filter(usr_des_id=usrdesig,usr_name=usrname,usr_mobile=usrmobile).exists()
     if is_exists:
         messages.info(request, 'User Detail with given Details is already exists.!!')
         return redirect('/userDesignationRedirect')
     ud.usr_des_id = usrdesig
     ud.usr_name = usrname
     ud.usr_mobile = usrmobile
-    ud.location_id = usrloc
+    # ud.location_id = usrloc
     ud.save()
     messages.success(request, 'User Details Saved Successfully...!!')
     return redirect('/userDetails')
@@ -83,7 +83,7 @@ def userDetailsUpdate(request):
     uddata.usr_des_id=UserDesignationMaster.objects.get(usr_des_id=request.POST.get('usrdesig'))
     uddata.usr_name=request.POST.get('usrname')
     uddata.usr_mobile=request.POST.get('usrmobile')
-    uddata.location_id=LocationDetails.objects.get(location_id=request.POST.get('usrloc'))
+    # uddata.location_id=LocationDetails.objects.get(location_id=request.POST.get('usrloc'))
     uddata.save()
     messages.success(request, 'User Details UPDATED Successfully...!!')
     return redirect('/userDetails')

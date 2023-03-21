@@ -3,17 +3,9 @@ $(document).ready(function(){
 })
 
 $(".checkbox-input").click(function () {
-    var backgroundColor = $(this).is(":checked") ? "beige;" : "";
+    var value = $(this).is(":checked") ? "on" : "off";
     $(this)
-      .closest("tr")
-      .attr("style", "background-color: " + backgroundColor + "");
+    .closest("tr")      
+    .find('input[class=hold]').val(value);
   });
-  $("#checkAll").click(function () {
-    $("input:checkbox").not(this).prop("checked", this.checked);
-    var backgroundColor = $("input:checkbox").is(":checked")
-      ? "beige;"
-      : "";
-    $("input:checkbox")
-      .closest("tr")
-      .attr("style", "background-color: " + backgroundColor + "");
-  });
+ 

@@ -64,11 +64,16 @@ urlpatterns = [
 
     path('issueRedirect', views.issueRedirect, name='issueRedirect'),
     path('issueProductCategoryFilter', views.issueProductCategoryFilter, name='issueProductCategoryFilter'),
-    path('issueProductDetailsFilter', views.issueProductDetailsFilter, name='issueProductDetailsFilter'),
-    path('issueProductFilter', views.issueProductFilter, name='issueProductFilter'),
+    path('issueProductModelFilter', views.issueProductModelFilter, name='issueProductModelFilter'),
+    path('issueOtherProductDetailsFilter', views.issueOtherProductDetailsFilter, name='issueOtherProductDetailsFilter'),
+    path('issueUserDetailsFilter', views.issueUserDetailsFilter, name='issueUserDetailsFilter'),
+    path('IssueDetailsSubmit', views.IssueDetailsSubmit, name='IssueDetailsSubmit'),
+    path('listAllIssueDetails', views.listAllIssueDetails, name='listAllIssueDetails'), 
+    path('receiptPage', views.receiptPage, name='receiptPage'), 
 
-    path('listAllIssueDetails', views.listAllIssueDetails, name='listAllIssueDetails'),
     path('returnRedirect', views.returnRedirect, name='returnRedirect'),
+    path('returnGetIssueStuff', views.returnGetIssueStuff, name='returnGetIssueStuff'),
+    path('returnDetailsSubmit', views.returnDetailsSubmit, name='returnDetailsSubmit'),
     path('listAllReturnDetails', views.listAllReturnDetails, name='listAllReturnDetails'),
     path('healthDetailsRedirect', views.healthDetailsRedirect, name='healthDetailsRedirect'),
 ]
